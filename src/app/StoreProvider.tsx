@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { store } from "@/lib/store";
+import { store } from "@/redux/store";
 import { Provider } from "react-redux";
 
-const StoreProvidor: React.FC<{ children: React.ReactNode }> = ({
+const StoreProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   return (
@@ -13,4 +13,4 @@ const StoreProvidor: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export default StoreProvidor;
+export default StoreProvider;
