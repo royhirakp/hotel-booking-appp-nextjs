@@ -1,5 +1,5 @@
 import MeterialUiSelect from "@/component/muiCoustomComponent/MeterialUiSelect";
-import { Box, Stack, TextField } from "@mui/material";
+import { Box, Stack, TextField, Typography } from "@mui/material";
 
 import React, { useEffect, useState } from "react";
 import PasswordInput from "../muiCoustomComponent/PasswordInput";
@@ -72,21 +72,7 @@ export default function MultiStepFormSingup2(props: MeterialUiSelectProps) {
           />
           {/* {errors.email && <span>email letters</span>} */}
         </Box>
-        {/* <Box
-          sx={{
-            width: "100%",
-            alignItems: "center",
-            height: "50%",
-            display: "flex",
-            justifyContent: "space-around",
-            flexDirection: {
-              xs: "column",
-              sm: "row",
-            },
-            border: "1px solid",
-          }}
-        > */}
-        {/* {errors.email && <span>email letters</span>} */}
+
         <Stack
           sx={{
             justifyContent: "space-around",
@@ -115,6 +101,18 @@ export default function MultiStepFormSingup2(props: MeterialUiSelectProps) {
           />
         </Stack>
         {/* </Box> */}
+        <br />
+
+        <Typography color="error" height={18}>
+          {passwordError
+            ? " password and confirm password dose not matched"
+            : ""}
+        </Typography>
+
+        <Typography>
+          *nb: password min: 1 upper, lowercase and special char &
+          Password.length is 8
+        </Typography>
       </Stack>
     </>
   );

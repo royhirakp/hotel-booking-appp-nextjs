@@ -8,7 +8,8 @@ import MultiStepFormSingup2 from "@/component/singupcomponents/MultiStepFormSing
 import MultiStepFormSingup1 from "@/component/singupcomponents/MultistepSingUpForm1";
 
 import { useSignUpMutation } from "@/redux/apiRequest/LoginRegister";
-
+import { LoadingButton } from "@mui/lab";
+import Link from "next/link";
 type Inputs = {
   name: string;
   lastName: string;
@@ -20,7 +21,14 @@ type Inputs = {
   password: string;
   confirmPassword: string;
 };
-
+interface RequestError {
+  status: number;
+  data: {
+    error: string;
+    message: string;
+    statusCode: string;
+  };
+}
 interface FormFirstPartProps {
   register: any;
   getValues: any;
@@ -41,8 +49,8 @@ interface FormFirstPartProps {
 
 const SingupComponent = () => {
   // register / singup api
-  const [Singup, { isLoading }] = useSignUpMutation();
-
+  const [Singup, { isLoading, isError, isSuccess, error }] =
+    useSignUpMutation();
   const [fromState, setFromStae] = useState(1);
   const [emalValidatinS, setemalValidatinS] = useState(true);
   const [mobileValidation, setMobileValidation] = useState(true);
@@ -68,13 +76,11 @@ const SingupComponent = () => {
         alert("Password - confirm password not matched ");
         return;
       }
-      if (data.name || data.email) {
+      if (!data.name || !data.email) {
         alert("please pull name and email");
         return;
       }
       let res = await Singup(data);
-      console.log("req send =", res);
-      console.log(data);
       // alert("From Submited; data=>" + JSON.stringify(data));
     } catch (error) {
       console.log("cant singup error form next app catch block");
@@ -111,6 +117,7 @@ const SingupComponent = () => {
             maxWidth: "600px",
             marginTop: "25px",
             borderRadius: "10px",
+            paddingTop: "10px",
           }}
         >
           <Box
@@ -145,7 +152,20 @@ const SingupComponent = () => {
                 />
 
                 {/* {errors.password && <span>Password wilbe 8 letters</span>} */}
+                <Box height={20}>
+                  <Typography variant="body1" textAlign="center" color="error">
+                    {isError ? (error as RequestError)?.data?.message : ""}
+                  </Typography>
 
+                  <Typography variant="body1" textAlign="center" color="error">
+                    {isSuccess ? "user created.  =>" : ""}
+                    {isSuccess ? (
+                      <Link href="/login"> go to Login page</Link>
+                    ) : (
+                      ""
+                    )}
+                  </Typography>
+                </Box>
                 <Stack direction="row" justifyContent="space-between" p={1}>
                   <Button
                     variant="outlined"
@@ -154,13 +174,17 @@ const SingupComponent = () => {
                   >
                     prev
                   </Button>
-                  <Button
-                    sx={{ display: `${fromState == 2 ? "block" : "none"}` }}
+                  <LoadingButton
+                    loading={isLoading}
+                    sx={{
+                      display: `${fromState == 2 ? "block" : "none"}`,
+                      padding: "5px 30px",
+                    }}
                     variant="contained"
                     onClick={handleSubmit(onSubmit)}
                   >
-                    register
-                  </Button>
+                    Register
+                  </LoadingButton>
                   <Button
                     variant="outlined"
                     disabled={fromState == 2}

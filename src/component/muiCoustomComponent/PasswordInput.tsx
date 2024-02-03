@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import FilledInput from "@mui/material/FilledInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -28,15 +28,26 @@ const PasswordInput = ({
   ) => {
     event.preventDefault();
   };
+  const [errorStatus, setErrorStatus] = useState(true);
   return (
     <div>
       <FormControl>
         <InputLabel htmlFor="filled-adornment-password">{label}</InputLabel>
         <FilledInput
-          error={passwordError}
-          {...register(`${fromItemName}`)}
+          error={passwordError || !errorStatus}
+          {...register(`${fromItemName}`, {
+            required: true,
+            pattern: /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$/i,
+          })}
           onChange={(e) => {
             setValue(e.target.value);
+            if (e.target.value.length < 6) return;
+            const pattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$/i;
+            if (pattern.test(e.target.value)) {
+              setErrorStatus(pattern.test(e.target.value));
+            } else {
+              setErrorStatus(pattern.test(e.target.value));
+            }
           }}
           id="filled-adornment-password"
           type={showPassword ? "text" : "password"}

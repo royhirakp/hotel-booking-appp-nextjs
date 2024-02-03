@@ -82,62 +82,6 @@ export default function MultiStepFormSingup1(props: componentProps) {
             setOTPerror={setOTPerror}
           />
         </>
-
-        {/* email */}
-        {/* <Box
-            flex={1}
-            sx={{
-              width: "100%",
-              alignItems: "center",
-              display: "flex",
-              justifyContent: "space-around",
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              id="outlined-basic"
-              label="Email"
-              variant="outlined"
-              fullWidth
-              sx={{
-                width: { xs: "90%", sm: "90%" },
-                // height: "75px",
-                // fontSize: "50px",
-              }}
-              {...register("email", {})}
-              error={!emalValidatinS}
-              disabled={!mobileinputDisabkleS}
-              helperText={
-                !emalValidatinS
-                  ? "Please enter a valid email address"
-                  : "*required"
-              }
-              onChange={(e) => {
-                if (e.target.value.length < 6) return;
-
-                const pattern =
-                  /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i;
-
-                if (pattern.test(e.target.value)) {
-                  console.log("String matches the pattern");
-                  setemalValidatinS(pattern.test(e.target.value));
-                } else {
-                  console.log("String does not match the pattern");
-                  setemalValidatinS(pattern.test(e.target.value));
-                }
-              }}
-            />
-          </Box> */}
-        {/* mobile */}
-
-        {/* backdrop */}
-
-        {/* backdrop */}
-
-        {/* {errors.email && <span>email letters</span>} */}
       </Stack>
     </>
   );
@@ -149,15 +93,16 @@ function FirstNameLastName(props: componentProps) {
     <Box
       sx={{
         width: "100%",
+        justifyContent: "center",
+        display: "flex",
       }}
     >
       <TextField
-        fullWidth
         id="outlined-basic"
         label="full name"
         variant="outlined"
         sx={{
-          // width: { xs: "90%", md: "45%" },
+          width: { xs: "60%", sm: "80%" },
           height: "60px",
           ".MuiOutlinedInput-input": {
             // fontSize: "15px",
@@ -231,8 +176,14 @@ const EmailVarification = (props: EmailVarificationProps) => {
     setOTPerror,
     setotpVarification,
   } = props;
-  const [generateOtp, { isLoading: loadingForGenerateOtp, error }] =
-    useGenerateOtpMutation();
+  const [
+    generateOtp,
+    {
+      isLoading: loadingForGenerateOtp,
+      error,
+      isSuccess: otpGenerationSuccess,
+    },
+  ] = useGenerateOtpMutation();
   const [verifyOtp, { isLoading, isError, isSuccess }] = useVerifyOtpMutation();
   async function handelOtpSubmit() {
     const res = await verifyOtp({
@@ -321,22 +272,25 @@ const EmailVarification = (props: EmailVarificationProps) => {
                   },
                 }}
               >
-                {(error as RequestError) ? "Verify" : "otp send"}
+                {/* {!(error as RequestError) ? "Verify" : "otp send to the email"} */}
+                {otpGenerationSuccess ? "otp send to the email" : "Verify"}
               </Button>
               <p
                 style={{
                   border: "1px solid",
                   position: "relative",
                   width: "203%",
-                  height: "50px",
+                  height: "60px",
                   borderRadius: "6px",
                   padding: "2px",
                 }}
               >
                 error status:
-                {(error as RequestError)
-                  ? (error as RequestError).data.message + "try again"
-                  : ""}
+                <span style={{ color: "red" }}>
+                  {(error as RequestError)
+                    ? (error as RequestError).data.message + "try again"
+                    : "NA"}
+                </span>
               </p>
             </Stack>
           </Stack>
@@ -362,7 +316,7 @@ const EmailVarification = (props: EmailVarificationProps) => {
             <Typography style={{}}>Enter OTP</Typography>
             <TextField
               id="outlined-basic"
-              type="number"
+              type="text"
               variant="outlined"
               error={isError}
               disabled={isSuccess}
