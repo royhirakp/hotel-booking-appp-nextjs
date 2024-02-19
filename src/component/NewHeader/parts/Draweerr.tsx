@@ -271,7 +271,7 @@ const LoginPartForMobileDrawer = () => {
     <Stack>
       <Box
         sx={{
-          display: localStorage.getItem("loginStatus") ? "none" : "block",
+          display: `${localStorage.getItem("loginStatus") ? "none" : "block"}`,
         }}
       >
         <Link

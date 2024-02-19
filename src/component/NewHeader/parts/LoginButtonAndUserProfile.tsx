@@ -10,7 +10,20 @@ import MenuItem from "@mui/material/MenuItem";
 
 const LoginButtonAndUserProfile = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [token, setToken] = React.useState<null | string>(null);
   const open = Boolean(anchorEl);
+  const isLocalStorageAvailable =
+    typeof window !== "undefined" && window.localStorage;
+  useEffect(() => {
+    if (isLocalStorageAvailable) {
+      setToken(localStorage.getItem("loginStatus"));
+    }
+  }, [isLocalStorageAvailable]);
+  // console.log(
+  //   localStorage.getItem("loginStatus"),
+  //   // localStorage.getItem("helo"),
+  //   '====localStorage.getItem("loginStatus") '
+  // );
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,8 +37,8 @@ const LoginButtonAndUserProfile = () => {
         <Box
           sx={{
             display:
-              // "block",
-              `${localStorage.getItem("loginStatus") ? "none" : "block"}`,
+              //  "block",
+              `${token ? "none" : "block"}`,
           }}
         >
           <Link href="/login">
@@ -50,7 +63,7 @@ const LoginButtonAndUserProfile = () => {
           sx={{
             display:
               // "flex",
-              `${localStorage.getItem("loginStatus") ? "flex" : "none"}`,
+              `${token ? "flex" : "none"}`,
           }}
         >
           <IconButton onClick={handleClick} sx={{ padding: 0 }}>
