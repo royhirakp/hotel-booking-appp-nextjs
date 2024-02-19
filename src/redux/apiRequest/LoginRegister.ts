@@ -20,7 +20,7 @@ export const userLoginRegister = createApi({
       const token = localStorage.getItem("token");
       if (token) {
         headers.set("authorization", `${token}`);
-        console.log("from redux, token set ", token);
+        // console.log("from redux, token set ", token);
       }
       headers.set("key", "data");
       return headers;

@@ -165,7 +165,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
         pricePerNight < formData.priceRange[1]
       );
     });
-    console.log("filterF=======", filterF);
+    // console.log("filterF=======", filterF);
     setFetchedData(filterF);
   }
   return (

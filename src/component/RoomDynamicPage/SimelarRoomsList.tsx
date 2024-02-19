@@ -10,7 +10,6 @@ import {
   Button,
 } from "@mui/material";
 import Image from "next/image";
-
 const SimelarRoomsList = () => {
   return (
     <Box sx={{ height: "100%" }} m={2}>

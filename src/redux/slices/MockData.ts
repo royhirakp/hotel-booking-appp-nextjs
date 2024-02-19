@@ -147,7 +147,7 @@ const BooksSlice = createSlice({
           pricePerNight < formData.priceRange[1]
         );
       });
-      console.log(filterF);
+      // console.log(filterF);
 
       state.filterRoomList = filterF;
       state.totalNoOfPage = calculateTotalNoOfPages(filterF.length);

@@ -23,8 +23,9 @@ const LoginButtonAndUserProfile = () => {
       <Box>
         <Box
           sx={{
-            display: "block",
-            // localStorage.getItem("loginStatus") ? "none" : "block",
+            display:
+              // "block",
+              `${localStorage.getItem("loginStatus") ? "none" : "block"}`,
           }}
         >
           <Link href="/login">
@@ -47,8 +48,9 @@ const LoginButtonAndUserProfile = () => {
           direction="row"
           spacing={2}
           sx={{
-            display: "flex",
-            // localStorage.getItem("loginStatus") ? "flex" : "none",
+            display:
+              // "flex",
+              `${localStorage.getItem("loginStatus") ? "flex" : "none"}`,
           }}
         >
           <IconButton onClick={handleClick} sx={{ padding: 0 }}>

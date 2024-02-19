@@ -14,7 +14,7 @@ const DisplayComponent = () => {
           xl: "420px",
         },
         height: {
-          xs: "120px",
+          xs: "160px",
           md: "350px",
           xl: "450px",
         },
@@ -57,12 +57,23 @@ const DisplayComponent = () => {
           <Box sx={{ paddingTop: { xs: "10px" } }}>
             {/* <a href="####"> SING UOOO</a> */}
             <Typography
-              variant="body2"
-              sx={{ display: "inline-block", paddingRight: "10px" }}
+              variant="h6"
+              sx={{
+                display: "inline-block",
+                paddingRight: "10px",
+                minWidth: "240px",
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1.2rem",
+                  md: "1.25rem",
+                },
+              }}
             >
-              sing up?
+              Sing up?
+              <Link style={{ paddingLeft: "5px" }} href="/singup">
+                create a account
+              </Link>
             </Typography>
-            <Link href="/singup">create a account</Link>
           </Box>
         </Box>
       </Stack>

@@ -6,15 +6,17 @@ import FilterDataDisplayForMobileMODAL from "../FilterDataDisplayForMobileMODAL"
 import RoomListControls from "../RoomListControls";
 import RoomList from "../RoomList";
 import data from "@/data/Data";
+import { useGetAllRoomsQuery } from "@/redux/apiRequest/LoginRegister";
 const BookingPageSearch = ({ setState }: { setState: any }) => {
   let [fetchData, setFetchedData] = useState<any[]>([]);
   let [paginationSetData, setpaginationSetData] = useState<any[]>([]);
   let [pageNo, setpageNo] = useState(1);
   const ItemPerPage = 7;
-
+  let { data: reduxData } = useGetAllRoomsQuery({});
+  // console.log(data, reduxData?.roomsData);
   useEffect(() => {
-    setFetchedData(data);
-  }, []);
+    setFetchedData(reduxData?.roomsData || []);
+  }, [reduxData]);
   useEffect(() => {
     const startIndex = (pageNo - 1) * ItemPerPage;
     const endIndex = startIndex + ItemPerPage;
@@ -50,7 +52,6 @@ const BookingPageSearch = ({ setState }: { setState: any }) => {
               xs: "none",
               md: "block",
             },
-            // top: "50px",
             maxWidth: "500px",
             minWidth: "240px",
           }}

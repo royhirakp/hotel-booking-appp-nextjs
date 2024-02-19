@@ -57,7 +57,26 @@ const Headding = () => {
     </>
   );
 };
+
+import { useGetRoomsForHomeQuery } from "@/redux/apiRequest/LoginRegister";
 const SwiperComponent = () => {
+  const { data, isLoading } = useGetRoomsForHomeQuery({});
+  // console.log("data===", data.roomsData);
+  if (isLoading) {
+    return (
+      <Box
+        height={450}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Typography p={5} variant="h3">
+          Loading Best Rooms...
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <Swiper
       slidesPerView={1}
@@ -77,26 +96,30 @@ const SwiperComponent = () => {
       <Box sx={{ paddingTop: "50px" }}>
         <SwiperControlButton />
       </Box>
-      {[
-        { img: "/RoomBookingpage/room1.jpg", id: "1" },
-        { img: "/hotelsphoto/Screenshot 2023-10-03 220127.jpg", id: "2" },
-        { img: "/hotelsphoto/Screenshot 2023-10-03 220127.jpg", id: "3" },
-        { img: "/hotelsphoto/Screenshot 2023-10-03 220328.png", id: "4" },
-        { img: "/hotelsphoto/Screenshot 2023-10-03 220355.png", id: "5" },
-        { img: "/hotelsphoto/Screenshot 2023-10-03 220127.jpg", id: "6" },
-      ].map((item, i) => {
-        return (
-          <SwiperSlide key={i}>
-            <HotelProductCard item={item} />
-          </SwiperSlide>
-        );
-      })}
+      {
+        // [
+        //   { img: "/RoomBookingpage/room1.jpg", id: "1" },
+        //   { img: "/hotelsphoto/Screenshot 2023-10-03 220127.jpg", id: "2" },
+        //   { img: "/hotelsphoto/Screenshot 2023-10-03 220127.jpg", id: "3" },
+        //   { img: "/hotelsphoto/Screenshot 2023-10-03 220328.png", id: "4" },
+        //   { img: "/hotelsphoto/Screenshot 2023-10-03 220355.png", id: "5" },
+        //   { img: "/hotelsphoto/Screenshot 2023-10-03 220127.jpg", id: "6" },
+        // ]
+        data?.roomsData?.map((item: any, i: any) => {
+          return (
+            <SwiperSlide key={i}>
+              <HotelProductCard item={item} />
+            </SwiperSlide>
+          );
+        })
+      }
     </Swiper>
   );
 };
-const HotelProductCard: React.FC<{ item: { img: string; id: string } }> = ({
-  item,
-}) => {
+const HotelProductCard: React.FC<{
+  item: { imageurl: string; id: string };
+}> = ({ item }) => {
+  // console.log("itemmm===", item);
   return (
     <Paper
       elevation={12}
@@ -124,7 +147,7 @@ const HotelProductCard: React.FC<{ item: { img: string; id: string } }> = ({
       {/* IAMGE */}
       <Box sx={{ width: "100%", borderRadius: "10px" }}>
         <Image
-          src={item.img}
+          src={item?.imageurl}
           width={1000}
           height={1000}
           style={{

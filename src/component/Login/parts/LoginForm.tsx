@@ -72,9 +72,9 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await Login(data);
-      console.log(data, res, isSuccess);
+      // console.log(res, isSuccess);
       if ((res as susessResponse)?.data) {
-        console.log((res as susessResponse).data.token);
+        // console.log((res as susessResponse).data.token);
 
         localStorage.setItem("loginStatus", (res as susessResponse).data.token);
         router.push("/webapp/Home");
@@ -168,10 +168,10 @@ const LoginForm = () => {
                     /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i;
 
                   if (pattern.test(e.target.value)) {
-                    console.log("String matches the pattern");
+                    // console.log("String matches the pattern");
                     setEmailValidationS(pattern.test(e.target.value));
                   } else {
-                    console.log("String does not match the pattern");
+                    // console.log("String does not match the pattern");
                     setEmailValidationS(pattern.test(e.target.value));
                   }
                 }}

@@ -11,7 +11,7 @@ import { useGetRoomsForHomeQuery } from "@/redux/apiRequest/LoginRegister";
 
 const HomePageMain = () => {
   const { data } = useGetRoomsForHomeQuery({});
-  console.log(data?.roomsData, "===== home oahe 17.35");
+  // console.log(data?.roomsData, "===== home oahe 17.35");
 
   return (
     <div>
@@ -23,7 +23,7 @@ const HomePageMain = () => {
         }}
       >
         {data?.roomsData.map((item, i) => {
-          console.log(item, i);
+          // console.log(item, i);
 
           return <div key={i}>hirak</div>;
         })}

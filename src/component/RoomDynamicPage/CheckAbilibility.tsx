@@ -18,10 +18,10 @@ const CheckAbilibility = () => {
     dates: [],
   });
   const handleInputChange = (event: any) => {
-    console.log(event);
+    // console.log(event);
     let firstDate = event[0];
     let secondDate = event[1];
-    console.log(firstDate?.$d, secondDate?.$d);
+    // console.log(firstDate?.$d, secondDate?.$d);
     setFormData((prevFormData) => ({
       ...prevFormData,
       dates: [firstDate?.$d, secondDate?.$d],
@@ -50,8 +50,7 @@ const CheckAbilibility = () => {
   // You can access the collected data here
 
   const handleCheckAvailability = () => {
-    console.log("Form Data:", formData);
-
+    // console.log("Form Data:", formData);
     // console.log('Selected Age:', age);
   };
 

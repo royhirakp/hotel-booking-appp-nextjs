@@ -98,7 +98,7 @@ const bookingSlice = createSlice({
     },
 
     setPaymentInfo: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.paymentMethod = action.payload.data;
     },
   },

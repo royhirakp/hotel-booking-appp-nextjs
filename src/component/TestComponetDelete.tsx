@@ -15,7 +15,7 @@ const TestComponetDelete = () => {
               password: "apappapaH22@Jjj",
             });
 
-            console.log("red===", res);
+            // console.log("red===", res);
           }}
         >
           ckiiiiiii

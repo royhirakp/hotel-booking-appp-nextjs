@@ -190,7 +190,7 @@ const EmailVarification = (props: EmailVarificationProps) => {
       email: getValues("email"),
       otp: otpInput,
     });
-    console.log(res);
+    // console.log(res);
   }
 
   return (
@@ -238,10 +238,10 @@ const EmailVarification = (props: EmailVarificationProps) => {
                   /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i;
 
                 if (pattern.test(e.target.value)) {
-                  console.log("String matches the pattern");
+                  // console.log("String matches the pattern");
                   setemalValidatinS(pattern.test(e.target.value));
                 } else {
-                  console.log("String does not match the pattern");
+                  // console.log("String does not match the pattern");
                   setemalValidatinS(pattern.test(e.target.value));
                 }
               }}

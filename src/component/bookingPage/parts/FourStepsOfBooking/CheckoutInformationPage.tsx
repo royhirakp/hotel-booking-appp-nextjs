@@ -29,7 +29,7 @@ const UserandRoomDetails = () => {
   const data = useAppSelector((s) => s.Booking.userInfo);
   const aditionalService = useAppSelector((s) => s.Booking.additionalservices);
   const total = useAppSelector((s) => s.Booking.totalPrice);
-  console.log("datataaa form checkinfototaltotaltotal ", total);
+  // console.log("datataaa form checkinfototaltotaltotal ", total);
   return (
     <Box>
       <Typography variant="subtitle1" fontWeight={700} pb={1}>

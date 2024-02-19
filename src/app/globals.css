@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities; */
 
-/*  */
-
 /* .swiper-horizontal {
   overflow: visible;
 } */
 
+/* body {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+} */
 .coustomSelect {
   width: 130px;
   height: 30px;
