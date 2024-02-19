@@ -19,6 +19,7 @@ const LoginButtonAndUserProfile = () => {
       setToken(localStorage.getItem("loginStatus"));
     }
   }, [isLocalStorageAvailable]);
+
   // console.log(
   //   localStorage.getItem("loginStatus"),
   //   // localStorage.getItem("helo"),

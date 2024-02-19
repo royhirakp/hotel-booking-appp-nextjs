@@ -15,16 +15,24 @@ import SimelarRoomsList from "@/component/RoomDynamicPage/SimelarRoomsList";
 import CheckAbilibility from "@/component/RoomDynamicPage/CheckAbilibility";
 import AddPhoto from "@/component/RoomDynamicPage/AddPhoto";
 import data from "@/data/Data";
+import { useGetUnitRoomQuery } from "@/redux/apiRequest/LoginRegister";
 const RoomDynamicPage = ({ id }: { id: any }) => {
+  console.log(id, "=====id");
+  const { data: fetchSingleRoomDta } = useGetUnitRoomQuery({
+    id: "65b7fe2e1020b1f2470b8c3e",
+  });
+
   let [roomData, setRoomData] = useState<any>({
     title: "titele loading....",
     pricePerNight: "pricePerNight loading....",
     images: [],
     comments: [],
   });
+  // console.log("fetchSingleRoomDta===", fetchSingleRoomDta);
   useEffect(() => {
     let item: any = data.find((item) => item.id * 1 === id * 1);
     setRoomData(item);
+    // console.log("item===", item);
   }, [id]);
 
   return (
@@ -37,7 +45,7 @@ const RoomDynamicPage = ({ id }: { id: any }) => {
         <Stack direction="row" gap={1} maxWidth="1500px" margin="auto">
           <Stack direction="column" flex={5} width="70%">
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <ImageConatiner images={roomData?.images} />
+              <ImageConatiner images={fetchSingleRoomDta?.images} />
             </Box>
             <Box sx={{ margin: "1.3%" }}>
               <RoomInfoB />
@@ -52,7 +60,7 @@ const RoomDynamicPage = ({ id }: { id: any }) => {
               <AditionalRoomService />
             </Box>
             <Box>
-              <RoomReviews comments={roomData?.comments} />
+              <RoomReviews comments={fetchSingleRoomDta?.comments} />
             </Box>
             <Box>
               <RoomLocationInGoogleMap />

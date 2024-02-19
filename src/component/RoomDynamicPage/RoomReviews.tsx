@@ -10,7 +10,7 @@ const RoomReviews = ({ comments }: { comments: any }) => {
         <Typography variant="subtitle1">Room Reviews</Typography>
       </Box>
       <Stack direction="column" gap={3} sx={{ margin: "25px 15px 0px 15px" }}>
-        {comments.map((item: any, i: number) => {
+        {comments?.map((item: any, i: number) => {
           return (
             <Box key={i}>
               <Paper style={{}}>

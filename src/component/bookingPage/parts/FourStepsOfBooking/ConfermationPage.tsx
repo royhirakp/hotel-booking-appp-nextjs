@@ -23,6 +23,7 @@ const ConfermationPage = () => {
   const total = useAppSelector((s) => s.Booking.totalPrice);
   const aditionalService = useAppSelector((s) => s.Booking.additionalservices);
   const paymentMode = useAppSelector((s) => s.Booking.paymentMethod);
+  const checkoutInfo = useAppSelector((S) => S.Booking);
   return (
     <div>
       <Box>

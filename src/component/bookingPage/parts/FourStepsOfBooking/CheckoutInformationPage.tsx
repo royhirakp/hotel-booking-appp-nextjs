@@ -227,6 +227,7 @@ const PaymentDetails = ({ handelNext }: { handelNext: any }) => {
 
 const PaypalComponetPayment = ({ handelNext }: { handelNext: any }) => {
   const dispatch = useAppDispatch();
+  const checkoutInfo = useAppSelector((S) => S.Booking);
   return (
     <Box
       sx={{
@@ -260,6 +261,7 @@ const PaypalComponetPayment = ({ handelNext }: { handelNext: any }) => {
           onClick={() => {
             handelNext();
             dispatch(setPaymentInfo({ data: "papal" }));
+            console.log("make api call on backend, from paypal", checkoutInfo);
           }}
         >
           pay
@@ -271,6 +273,7 @@ const PaypalComponetPayment = ({ handelNext }: { handelNext: any }) => {
 
 const CraditCardComponent = ({ handelNext }: { handelNext: any }) => {
   const dispatch = useAppDispatch();
+  const checkoutInfo = useAppSelector((S) => S.Booking);
   return (
     <Stack
       sx={{ padding: "1%", height: "100%" }}
@@ -399,6 +402,10 @@ const CraditCardComponent = ({ handelNext }: { handelNext: any }) => {
             onClick={() => {
               handelNext();
               dispatch(setPaymentInfo({ data: "CraditCard" }));
+              console.log(
+                "make api call on backend, credit cartddddddd fromm===== ",
+                checkoutInfo
+              );
             }}
           >
             pay
@@ -411,7 +418,7 @@ const CraditCardComponent = ({ handelNext }: { handelNext: any }) => {
 
 const BankTransferComponant = ({ handelNext }: { handelNext: any }) => {
   const dispatch = useAppDispatch();
-
+  const checkoutInfo = useAppSelector((S) => S.Booking);
   return (
     <Stack
       sx={{ padding: "10%", height: "100%" }}
@@ -473,6 +480,7 @@ const BankTransferComponant = ({ handelNext }: { handelNext: any }) => {
             }}
             onClick={() => {
               dispatch(setPaymentInfo({ data: "Bank Transfer" }));
+              console.log("make api call on backend ", checkoutInfo);
               handelNext();
             }}
           >
@@ -486,7 +494,7 @@ const BankTransferComponant = ({ handelNext }: { handelNext: any }) => {
 
 const PayOnArivalComponent = ({ handelNext }: { handelNext: any }) => {
   const dispatch = useAppDispatch();
-
+  const checkoutInfo = useAppSelector((S) => S.Booking);
   return (
     <Stack
       direction="column"
@@ -512,6 +520,10 @@ const PayOnArivalComponent = ({ handelNext }: { handelNext: any }) => {
           onClick={() => {
             dispatch(setPaymentInfo({ data: "PayOn Arival" }));
             handelNext();
+            console.log(
+              "make api call on backend from PayOnArivalComponent===== ",
+              checkoutInfo
+            );
           }}
         >
           Book

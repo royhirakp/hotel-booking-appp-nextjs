@@ -81,6 +81,7 @@ export default function ProsidToCheckout({ handelNext }: { handelNext: any }) {
               alert("please tik the check box");
               return;
             }
+            console.log("workingggg...", checkoutInfo);
             handelNext();
           }}
         >

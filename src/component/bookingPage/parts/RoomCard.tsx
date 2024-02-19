@@ -18,6 +18,7 @@ const responsiveIconSize = {
 };
 const RoomCard = ({ setState, item }: { setState: any; item: any }) => {
   const router = useRouter();
+  // console.log("item====", item);
   const { title, abalableServices, describtion, pricePerNight, imageurl } =
     item;
 
@@ -187,6 +188,7 @@ const BookingAction = ({
   item: any;
 }) => {
   const dispatch = useAppDispatch();
+  console.log("bokking asction ", item);
   return (
     <Box
       sx={{
@@ -210,7 +212,6 @@ const BookingAction = ({
           variant="contained"
           sx={{
             "&.MuiButtonBase-root": {
-              // padding: "11%",
               fontSize: { xs: "7px", sm: "9px", md: "9px" },
             },
           }}

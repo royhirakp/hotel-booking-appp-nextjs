@@ -15,7 +15,8 @@ export const userLoginRegister = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       // "https://api.dribbble.com/v2",
-      "http://localhost:3000",
+      // "http://localhost:3000",
+      "https://hotailbooking-nestjs-api.onrender.com",
     prepareHeaders(headers) {
       const token = localStorage.getItem("token");
       if (token) {
@@ -90,10 +91,11 @@ export const userLoginRegister = createApi({
           };
         },
       }),
-      getUnitPost: builder.query({
+      getUnitRoom: builder.query({
         query({ id }) {
+          console.log("request comming", id);
           return {
-            url: `/book/${id}`,
+            url: `/room/unit/${id}`,
             method: "GET",
           };
         },
@@ -119,7 +121,7 @@ export const {
   useSignUpMutation,
   useGetRoomsForHomeQuery,
   useMakeCommentMutation,
-  useGetUnitPostQuery,
+  useGetUnitRoomQuery,
   useAddBooksMutation,
   useGetAllRoomsQuery,
 } = userLoginRegister;

@@ -13,6 +13,7 @@ import {
 } from "@/redux/slices/BookingSlice";
 
 import { useDispatch } from "react-redux";
+import { useGetAllRoomsQuery } from "@/redux/apiRequest/LoginRegister";
 
 const BookingPage = () => {
   const [state, setState] = useState(0);
@@ -30,7 +31,6 @@ const BookingPage = () => {
         sx={{
           maxWidth: "1500px",
           margin: "auto",
-
           padding: {
             xs: "0",
             sm: "0 2% ",
@@ -68,12 +68,12 @@ const MultiStepForm = ({
 }) => {
   let element;
   const formStage = useAppSelector((s) => s.Booking.bookingStage);
-
+  let { data: reduxData } = useGetAllRoomsQuery({});
   switch (formStage) {
     case 0:
       element = (
         <>
-          <BookingPageSearch setState={setState} />
+          <BookingPageSearch reduxData={reduxData} setState={setState} />
         </>
       );
       break;
