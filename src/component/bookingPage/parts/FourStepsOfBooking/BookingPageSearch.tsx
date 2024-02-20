@@ -1,18 +1,21 @@
 "use client";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, CircularProgress, Skeleton, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import PaginationRounded from "@/component/muiCoustomComponent/Pagination";
 import FilterDataDisplayForMobileMODAL from "../FilterDataDisplayForMobileMODAL";
 import RoomListControls from "../RoomListControls";
 import RoomList from "../RoomList";
 import data from "@/data/Data";
+import LinearProgress from "@mui/material/LinearProgress";
 // import { useGetAllRoomsQuery } from "@/redux/apiRequest/LoginRegister";
 const BookingPageSearch = ({
   setState,
   reduxData,
+  isLoading,
 }: {
   setState: any;
   reduxData: any;
+  isLoading: any;
 }) => {
   let [fetchData, setFetchedData] = useState<any[]>([]);
   let [paginationSetData, setpaginationSetData] = useState<any[]>([]);
@@ -64,6 +67,22 @@ const BookingPageSearch = ({
           <RoomListControls setFetchedData={setFetchedData} />
         </Box>
         <Box flex={5} mt={2}>
+          {isLoading && (
+            <>
+              <Stack
+                direction="column"
+                spacing={4}
+                justifyContent="center"
+                height="100%"
+              >
+                <LazyLoadingComponent />
+                <LazyLoadingComponent />
+                <LazyLoadingComponent />
+                <LazyLoadingComponent />
+                <LazyLoadingComponent />
+              </Stack>
+            </>
+          )}
           <RoomList setState={setState} paginationSetData={paginationSetData} />
         </Box>
       </Stack>
@@ -81,3 +100,69 @@ const BookingPageSearch = ({
 };
 
 export default BookingPageSearch;
+
+const LazyLoadingComponent = () => {
+  return (
+    <>
+      <Stack
+        spacing={1}
+        direction="row"
+        sx={{
+          height: {
+            xs: 100,
+            md: 150,
+          },
+        }}
+      >
+        <Skeleton variant="rectangular" width="40%" height="100%" />
+        <Stack
+          direction="column"
+          spacing={1}
+          width="40%"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Skeleton variant="text" width="100%" height={12} />
+          <Skeleton variant="text" width="100%" height={12} />
+          <Skeleton variant="text" width="100%" height={12} />
+          <Skeleton variant="text" width="100%" height={12} />
+          <Skeleton variant="text" width="100%" height={12} />
+          <Skeleton
+            variant="text"
+            width="100%"
+            height={12}
+            sx={{
+              display: {
+                xs: "none",
+                md: "block",
+              },
+            }}
+          />
+          <Skeleton
+            variant="text"
+            width="100%"
+            height={12}
+            sx={{
+              display: {
+                xs: "none",
+                md: "block",
+              },
+            }}
+          />
+          <Skeleton
+            variant="text"
+            width="100%"
+            height={12}
+            sx={{
+              display: {
+                xs: "none",
+                md: "block",
+              },
+            }}
+          />
+        </Stack>
+        <Skeleton variant="rounded" width="20%" height="100%" />
+      </Stack>
+    </>
+  );
+};

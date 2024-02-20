@@ -7,12 +7,8 @@ import Hero from "@/component/root/parts/Hero";
 import HotelsList from "@/component/root/parts/HotelsList";
 import StartyourJourneycomponent from "@/component/root/parts/StartyourJourneycomponent";
 import { Box, Divider } from "@mui/material";
-import { useGetRoomsForHomeQuery } from "@/redux/apiRequest/LoginRegister";
 
 const HomePageMain = () => {
-  const { data } = useGetRoomsForHomeQuery({});
-  // console.log(data?.roomsData, "===== home oahe 17.35");
-
   return (
     <div>
       <Box
@@ -22,15 +18,10 @@ const HomePageMain = () => {
           },
         }}
       >
-        {data?.roomsData.map((item, i) => {
-          // console.log(item, i);
-
-          return <div key={i}>hirak</div>;
-        })}
         <Hero />
       </Box>
-      <CompanyList />
       <HotelsList />
+      <CompanyList />
       <Divider />
       <CoreValueComponent />
       <Divider />

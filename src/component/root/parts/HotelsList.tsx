@@ -17,6 +17,12 @@ import {
   Stack,
   IconButton,
   Button,
+  CardHeader,
+  Card,
+  Skeleton,
+  Avatar,
+  CardMedia,
+  CardContent,
 } from "@mui/material";
 import PoolIcon from "@mui/icons-material/Pool";
 import PetsIcon from "@mui/icons-material/Pets";
@@ -57,23 +63,65 @@ const Headding = () => {
     </>
   );
 };
-
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useGetRoomsForHomeQuery } from "@/redux/apiRequest/LoginRegister";
 const SwiperComponent = () => {
   const { data, isLoading } = useGetRoomsForHomeQuery({});
-  // console.log("data===", data.roomsData);
   if (isLoading) {
     return (
-      <Box
-        height={450}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Typography p={5} variant="h3">
-          Loading Best Rooms...
-        </Typography>
-      </Box>
+      <>
+        <Stack
+          direction="row"
+          sx={{ overflow: "hidden", justifyContent: "space-between" }}
+        >
+          {["", "", "", ""].map((item, i) => {
+            return (
+              <Card
+                key={i}
+                sx={{
+                  // maxWidth: 345,
+                  m: 2,
+                  minWidth: 220,
+                  width: "20%",
+                }}
+              >
+                <CardHeader />
+                <Skeleton
+                  sx={{ height: 190, margin: "0 4%" }}
+                  animation="wave"
+                  variant="rectangular"
+                />
+
+                <CardContent>
+                  <>
+                    <Skeleton
+                      animation="wave"
+                      height={15}
+                      width="20%"
+                      style={{ marginBottom: 6 }}
+                    />
+                    <Skeleton animation="wave" height={15} width="25%" />
+                    <Skeleton animation="wave" height={15} width="22%" />
+                    <Skeleton animation="wave" height={15} width="100%" />
+                    <Skeleton animation="wave" height={15} width="100%" />
+                  </>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </Stack>
+
+        {/* <Box
+          height={450}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Typography p={5} variant="h3">
+            Loading Best Rooms...
+          </Typography>
+        </Box> */}
+      </>
     );
   }
 
@@ -116,6 +164,7 @@ const SwiperComponent = () => {
     </Swiper>
   );
 };
+
 const HotelProductCard: React.FC<{
   item: { imageurl: string; id: string };
 }> = ({ item }) => {
