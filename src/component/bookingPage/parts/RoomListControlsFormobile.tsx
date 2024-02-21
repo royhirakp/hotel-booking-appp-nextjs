@@ -16,6 +16,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Slider from "@mui/material/Slider";
 import { pagination } from "@/redux/slices/MockData";
+
+import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+
 interface propsType {
   open: boolean;
   handleClose: any;
@@ -134,7 +139,7 @@ const RoomListControlsFormobile = ({ handleClose }: propsType) => {
               <Typography flex={1}>Check-out</Typography>
             </Stack>
             <Box>
-              {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DateRangePicker"]}>
                   <DateRangePicker
                     localeText={{ start: "", end: "" }}
@@ -146,7 +151,7 @@ const RoomListControlsFormobile = ({ handleClose }: propsType) => {
                     onChange={handleInputChange}
                   />
                 </DemoContainer>
-              </LocalizationProvider> */}
+              </LocalizationProvider>
             </Box>
           </div>
         </Box>
@@ -273,6 +278,10 @@ const RoomListControlsFormobile = ({ handleClose }: propsType) => {
               // console.log(checkedItems);
               dispatch(filterSearch({ formData, checkedItems }));
               dispatch(pagination({ pageNo: 1 }));
+
+              alert(
+                "this mobile version does not have any functionality. only Desktop version has "
+              );
             }}
           >
             Apply

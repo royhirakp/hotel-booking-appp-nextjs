@@ -10,10 +10,11 @@ interface AppState {
     tour: boolean;
   };
   userInfo: any;
-  checkIn_checkOut: [];
+  checkIn_checkOut: any[];
   spicalRequest: string;
   paymentMethod: string;
   IaGREEcHECKbOX: boolean;
+  singUpotpVerification: Boolean;
 }
 
 const initialState: AppState = {
@@ -26,6 +27,7 @@ const initialState: AppState = {
   spicalRequest: "",
   paymentMethod: "",
   IaGREEcHECKbOX: false,
+  singUpotpVerification: false,
 };
 
 const bookingSlice = createSlice({
@@ -101,6 +103,14 @@ const bookingSlice = createSlice({
       // console.log(action.payload);
       state.paymentMethod = action.payload.data;
     },
+    setBookingDates: (state, action) => {
+      // console.log(action.payload.data);
+      state.checkIn_checkOut = action.payload.data;
+    },
+    setOtpVerificationONredux: (state, action) => {
+      console.log(action.payload);
+      state.singUpotpVerification = action.payload.status;
+    },
   },
 });
 
@@ -113,5 +123,7 @@ export const {
   setSpacialRequest,
   setIaGREEcHECKbOX,
   setPaymentInfo,
+  setBookingDates,
+  setOtpVerificationONredux,
 } = bookingSlice.actions;
 export default bookingSlice.reducer;

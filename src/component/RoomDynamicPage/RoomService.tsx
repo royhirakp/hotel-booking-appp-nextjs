@@ -11,7 +11,8 @@ import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import ShowerIcon from "@mui/icons-material/Shower";
 import BalconyIcon from "@mui/icons-material/Balcony";
 import WifiIcon from "@mui/icons-material/Wifi";
-const RoomService = () => {
+const RoomService = ({ service }: { service: any }) => {
+  // console.log("serviceeee====", service);
   return (
     <Box>
       <Typography variant="subtitle1">Room Service</Typography>
@@ -25,17 +26,27 @@ const RoomService = () => {
         sx={{ margin: "auto" }}
       >
         {[
-          { icon: <WifiIcon />, titel: "Wi-Fi" },
-          { icon: <BalconyIcon />, titel: "Balcony" },
-          { icon: <ShowerIcon />, titel: "Sauna" },
-          { icon: <FreeBreakfastIcon />, titel: "Breakfast" },
-          { icon: <BrushIcon />, titel: "Dryer" },
-          { icon: <CoffeeMakerIcon />, titel: "Coffee Maker" },
-
-          { icon: <TvIcon />, titel: "TV" },
-          { icon: <HeatPumpIcon />, titel: "AC" },
-
-          { icon: <LocalBarIcon />, titel: "Mini Bar" },
+          { icon: <WifiIcon />, titel: "Wi-Fi", status: service?.smartPhone },
+          { icon: <BalconyIcon />, titel: "Balcony", status: service?.Sauna },
+          { icon: <ShowerIcon />, titel: "Sauna", status: service?.Sauna },
+          {
+            icon: <FreeBreakfastIcon />,
+            titel: "Breakfast",
+            status: service?.Breakfast,
+          },
+          { icon: <BrushIcon />, titel: "Dryer", status: service?.Hairdryer },
+          {
+            icon: <CoffeeMakerIcon />,
+            titel: "Coffee Maker",
+            status: service?.Coffeemaker,
+          },
+          { icon: <TvIcon />, titel: "TV", status: service?.WidesreenTv },
+          { icon: <HeatPumpIcon />, titel: "AC", status: service?.WidesreenTv },
+          {
+            icon: <LocalBarIcon />,
+            titel: "Mini Bar",
+            status: service?.miniBar,
+          },
         ].map((item, i) => {
           return (
             <Stack
@@ -53,6 +64,7 @@ const RoomService = () => {
                   xs: "40%",
                   sm: "30%",
                 },
+                display: `${item.status ? "flex" : "none"}`,
               }}
             >
               <Typography sx={{ display: "flex", alignItems: "center" }}>

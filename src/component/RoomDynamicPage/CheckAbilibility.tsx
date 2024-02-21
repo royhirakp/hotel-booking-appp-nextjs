@@ -1,5 +1,11 @@
 import React from "react";
 import { Box, Typography, Stack, Paper, Button } from "@mui/material";
+
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+
 // import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 // import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 // import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
@@ -51,7 +57,8 @@ const CheckAbilibility = () => {
 
   const handleCheckAvailability = () => {
     // console.log("Form Data:", formData);
-    // console.log('Selected Age:', age);
+    console.log("Selected Age:", "age");
+    alert("this part does not have any functionality");
   };
 
   return (
@@ -77,6 +84,21 @@ const CheckAbilibility = () => {
                   onChange={handleInputChange}
                 />
               </LocalizationProvider> */}
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DateRangePicker"]}>
+                  <DateRangePicker
+                    // localeText={{ start: "Check-in", end: "Check-out" }}
+                    localeText={{ start: "", end: "" }}
+                    sx={{
+                      ".MuiInputBase-input": {
+                        padding: "5%",
+                      },
+                    }}
+                    onChange={handleInputChange}
+                    format="DD/MM/YYYY"
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
             </Box>
           </div>
           <Typography variant="subtitle1">Guests</Typography>
@@ -110,9 +132,12 @@ const CheckAbilibility = () => {
               </Select>
             </FormControl>
           </div>
-          <Stack direction="row" sx={{ justifyContent: "center" }}>
+          <Stack direction="row" spacing={2} sx={{ justifyContent: "center" }}>
             <Button onClick={handleCheckAvailability} variant="contained">
               Check Abilibity
+            </Button>
+            <Button onClick={handleCheckAvailability} variant="contained">
+              Book This Room
             </Button>
           </Stack>
         </Box>

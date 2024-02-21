@@ -13,7 +13,35 @@ interface componentProps {
   setMobileValidation: any;
   setemalValidatinS: any;
   getValues: any;
+  setOtpVerification: any;
+  otpVerification: any;
 }
+interface EmailVarificationProps {
+  setOpen: any;
+  open: any;
+  mobileValidation: any;
+  setMobileinputDisable: any;
+  otpVarification: any;
+  mobileinputDisabkleS: any;
+  setOtpinput: any;
+  otoError: any;
+  fromState: any;
+  register: any;
+  emalValidatinS: any;
+  setemalValidatinS: any;
+  getValues: any;
+  otpInput: any;
+  setOTPerror: any;
+  setotpVarification: any;
+  setOtpVerification: any;
+  otpVerification: any;
+}
+import {
+  useGenerateOtpMutation,
+  useVerifyOtpMutation,
+} from "@/redux/apiRequest/LoginRegister";
+import { useAppDispatch } from "@/redux/hooks";
+import { setOtpVerificationONredux } from "@/redux/slices/BookingSlice";
 
 export default function MultiStepFormSingup1(props: componentProps) {
   const {
@@ -26,6 +54,8 @@ export default function MultiStepFormSingup1(props: componentProps) {
     setMobileValidation,
     setemalValidatinS,
     getValues,
+    setOtpVerification,
+    otpVerification,
   } = props;
   const [mobileinputDisabkleS, setMobileinputDisable] = useState(true);
   const [otoError, setOTPerror] = useState(false);
@@ -60,6 +90,8 @@ export default function MultiStepFormSingup1(props: componentProps) {
             register={register}
             handleSubmit={handleSubmit}
             getValues={getValues}
+            setOtpVerification={setOtpVerification}
+            otpVerification={otpVerification}
           />
         </>
         <>
@@ -80,6 +112,8 @@ export default function MultiStepFormSingup1(props: componentProps) {
             getValues={getValues}
             otpInput={otpInput}
             setOTPerror={setOTPerror}
+            setOtpVerification={setOtpVerification}
+            otpVerification={otpVerification}
           />
         </>
       </Stack>
@@ -128,33 +162,20 @@ function FirstNameLastName(props: componentProps) {
     </Box>
   );
 }
-import {
-  useGenerateOtpMutation,
-  useVerifyOtpMutation,
-} from "@/redux/apiRequest/LoginRegister";
 
-interface EmailVarificationProps {
-  setOpen: any;
-  open: any;
-  mobileValidation: any;
-  setMobileinputDisable: any;
-  otpVarification: any;
-  mobileinputDisabkleS: any;
-  setOtpinput: any;
-  otoError: any;
-  fromState: any;
-  register: any;
-  emalValidatinS: any;
-  setemalValidatinS: any;
-  getValues: any;
-  otpInput: any;
-  setOTPerror: any;
-  setotpVarification: any;
-}
 interface RequestError {
   status: number;
   data: {
     error: string;
+    message: string;
+    statusCode: string;
+  };
+}
+interface Varifiedresponse {
+  status: number;
+  data: {
+    error: string;
+    status: string;
     message: string;
     statusCode: string;
   };
@@ -174,7 +195,8 @@ const EmailVarification = (props: EmailVarificationProps) => {
     getValues,
     otpInput,
     setOTPerror,
-    setotpVarification,
+    setOtpVerification,
+    otpVerification,
   } = props;
   const [
     generateOtp,
@@ -184,13 +206,27 @@ const EmailVarification = (props: EmailVarificationProps) => {
       isSuccess: otpGenerationSuccess,
     },
   ] = useGenerateOtpMutation();
+  const dispatch = useAppDispatch();
   const [verifyOtp, { isLoading, isError, isSuccess }] = useVerifyOtpMutation();
   async function handelOtpSubmit() {
     const res = await verifyOtp({
       email: getValues("email"),
       otp: otpInput,
     });
-    // console.log(res);
+    //set the varified otp status to prevent the from to go to the next step
+    if ((res as Varifiedresponse)?.data?.status) {
+      dispatch(
+        setOtpVerificationONredux({
+          status: true,
+        })
+      );
+    } else {
+      dispatch(
+        setOtpVerificationONredux({
+          status: false,
+        })
+      );
+    }
   }
 
   return (

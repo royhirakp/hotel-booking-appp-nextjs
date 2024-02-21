@@ -327,6 +327,7 @@ let data = [
       },
     ],
   },
+
   {
     id: 6,
     title: "single room",

@@ -141,18 +141,30 @@ const TEXTDataCard = () => {
         }}
       >
         <RoomIcon color="error" />
-        <input
-          type="text"
-          style={{ width: "80%", height: "90%", border: "none" }}
-        />
-        <Button
-          onClick={() => {
-            router.push("/bookingPage");
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            alert("search functionality is not added");
+            router.push("/webapp/bookingPage");
           }}
-          variant="contained"
+          style={{
+            display: "flex",
+            height: "100%",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 6,
+          }}
         >
-          Search
-        </Button>
+          <input
+            type="text"
+            placeholder="search.."
+            style={{ width: "80%", height: "90%", border: "none" }}
+          />
+          <Button type="submit" variant="contained">
+            Search
+          </Button>
+        </form>
       </Box>
 
       <Stack

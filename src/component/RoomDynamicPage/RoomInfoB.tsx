@@ -10,6 +10,9 @@ import SingleBedIcon from "@mui/icons-material/SingleBed";
 const RoomInfoB = () => {
   return (
     <div>
+      <small>
+        Nb* this max guest , booking Night, Bed Type, Area is static data
+      </small>
       <Stack
         direction="row"
         flexWrap="wrap"

@@ -10,6 +10,7 @@ import MultiStepFormSingup1 from "@/component/singupcomponents/MultistepSingUpFo
 import { useSignUpMutation } from "@/redux/apiRequest/LoginRegister";
 import { LoadingButton } from "@mui/lab";
 import Link from "next/link";
+import { useAppSelector } from "@/redux/hooks";
 type Inputs = {
   name: string;
   lastName: string;
@@ -45,6 +46,8 @@ interface FormFirstPartProps {
   setemalValidatinS: React.Dispatch<React.SetStateAction<boolean>>;
   mobileValidation: boolean;
   setMobileValidation: React.Dispatch<React.SetStateAction<boolean>>;
+  setOtpVerification: any;
+  otpVerification: any;
 }
 
 const SingupComponent = () => {
@@ -55,6 +58,7 @@ const SingupComponent = () => {
   const [emalValidatinS, setemalValidatinS] = useState(true);
   const [mobileValidation, setMobileValidation] = useState(true);
   const [password_ConfirmError, setpassword_ConfirmError] = useState(false);
+  const [otpVerification, setOtpVerification] = useState<Boolean>(false);
   const {
     register,
     handleSubmit,
@@ -64,14 +68,6 @@ const SingupComponent = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      let fromData = {
-        name: "test name form next app",
-        email: "royhirakr@text.com",
-        password: "Hirak@1234",
-        age: "18-26",
-        country: "india",
-        gender: "m",
-      };
       if (password_ConfirmError) {
         alert("Password - confirm password not matched ");
         return;
@@ -84,8 +80,13 @@ const SingupComponent = () => {
       // alert("From Submited; data=>" + JSON.stringify(data));
     } catch (error) {
       console.log("cant singup error form next app catch block");
+      alert("cant singup error form next app catch block");
     }
   };
+
+  const sIngupOtpVerification = useAppSelector(
+    (s) => s.Booking.singUpotpVerification
+  );
 
   function handelMultiStepForm(state: any) {
     if (!emalValidatinS || !mobileValidation) {
@@ -94,6 +95,11 @@ const SingupComponent = () => {
     }
     if (state == "next") {
       if (fromState == 2) return;
+      if (!sIngupOtpVerification) {
+        console.log("otpVerification==", otpVerification);
+        alert("verify the otp first");
+        return;
+      }
 
       setFromStae(fromState + 1);
     } else {
@@ -134,7 +140,7 @@ const SingupComponent = () => {
                     margin: "15px 0",
                   }}
                 >
-                  <Typography variant="h5">Sing Up Form </Typography>
+                  <Typography variant="h5">Sing Up Form</Typography>
                 </Box>
 
                 <MultiStepForm
@@ -149,16 +155,26 @@ const SingupComponent = () => {
                   getValues={getValues}
                   passwordError={password_ConfirmError}
                   setPasswordError={setpassword_ConfirmError}
+                  setOtpVerification={setOtpVerification}
+                  otpVerification={otpVerification}
                 />
 
                 {/* {errors.password && <span>Password wilbe 8 letters</span>} */}
                 <Box height={20}>
-                  <Typography variant="body1" textAlign="center" color="error">
+                  <Typography
+                    variant="subtitle1"
+                    textAlign="center"
+                    color="error"
+                  >
                     {isError ? (error as RequestError)?.data?.message : ""}
                   </Typography>
 
-                  <Typography variant="body1" textAlign="center" color="error">
-                    {isSuccess ? "user created.  =>" : ""}
+                  <Typography
+                    variant="subtitle1"
+                    textAlign="center"
+                    color="error"
+                  >
+                    {isSuccess ? "user created.   " : ""}
                     {isSuccess ? (
                       <Link href="/login"> go to Login page</Link>
                     ) : (
@@ -174,6 +190,7 @@ const SingupComponent = () => {
                   >
                     prev
                   </Button>
+                  <input type="submit" style={{ display: "none" }} />
                   <LoadingButton
                     loading={isLoading}
                     sx={{
@@ -220,6 +237,9 @@ const MultiStepForm: React.FC<FormFirstPartProps> = ({
   getValues,
   passwordError,
   setPasswordError,
+  // MultiStepForm,
+  setOtpVerification,
+  otpVerification,
 }) => {
   let message;
 
@@ -237,6 +257,8 @@ const MultiStepForm: React.FC<FormFirstPartProps> = ({
             register={register}
             handleSubmit={handleSubmit}
             getValues={getValues}
+            setOtpVerification={setOtpVerification}
+            otpVerification={otpVerification}
           />
         </>
       );
@@ -268,9 +290,7 @@ const MultiStepForm: React.FC<FormFirstPartProps> = ({
           },
           display: "flex",
           gap: 3,
-          // paddingBottom: "8px",
           alignItems: "center",
-          // background: "green",
         }}
       >
         {message}

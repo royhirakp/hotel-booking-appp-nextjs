@@ -94,6 +94,7 @@ const IncludeServicesCheckBox = () => {
         <FormControlLabel
           control={
             <Checkbox
+              checked
               onChange={(e) => handleCheckboxChange(e, "WidesreenTv")}
             />
           }

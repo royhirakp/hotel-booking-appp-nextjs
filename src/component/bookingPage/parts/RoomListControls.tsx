@@ -3,7 +3,6 @@ import React from "react";
 
 import { Box, Paper, Typography, Stack, Button } from "@mui/material";
 import Image from "next/image";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 // import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 // import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 // import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
@@ -12,18 +11,25 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Slider from "@mui/material/Slider";
 import data from "@/data/Data";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setBookingDates } from "@/redux/slices/BookingSlice";
 const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
   // const dispatch = useAppDispatch();
+  const bookingData = useAppSelector((s) => s.Booking);
   const [checkedItems, setCheckedItems] = React.useState<{
     [key: string]: boolean;
   }>({
-    smartPhone: false,
-    miniBar: false,
-    Sauna: false,
-    Breakfast: false,
-    Hairdryer: false,
-    Coffeemaker: false,
-    WidesreenTv: false,
+    smartPhone: true,
+    miniBar: true,
+    Sauna: true,
+    Breakfast: true,
+    Hairdryer: true,
+    Coffeemaker: true,
+    WidesreenTv: true,
   });
   let minValue = 40;
   let maxVaule = 1000;
@@ -39,10 +45,28 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
     priceRange: [minValue, maxVaule],
     services: {},
   });
+
+  // const dateInRedux = useAppSelector((s) => s.Booking);
+  const dispatch = useAppDispatch();
   const handleInputChange = (event: any) => {
-    // console.log(event);
+    // console.log(dateInRedux, "====dateInRedux");
     let firstDate = event[0];
     let secondDate = event[1];
+    dispatch(
+      setBookingDates({
+        data: [
+          {
+            CheckInMonthName: firstDate?.$M + 1 + "",
+            dates: firstDate?.$D + "",
+          },
+          {
+            CheckOutMonthName: secondDate?.$M + 1 + "",
+            dates: secondDate?.$D + "",
+          },
+        ],
+      })
+    );
+
     // console.log(firstDate?.$D + "", firstDate?.$M + 1 + "");
     // console.log(secondDate?.$D + "", secondDate?.$M + 1 + "");
 
@@ -124,6 +148,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
         return true;
       }
     });
+
     // end month index
     let filterD = filterC.filter((item) => {
       let array: any = item.abilibiity[endMonthIndex].bookDates;
@@ -131,6 +156,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
         return true;
       }
     });
+
     let filterE = filterD.filter((item) => {
       // console.log(item.abalableServices, checkedItems);
       let temp = false;
@@ -156,6 +182,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
       }
       return temp;
     });
+
     // filter data by the price range
     let filterF = filterE.filter((item) => {
       const pricePerNight = parseFloat(item.pricePerNight);
@@ -165,8 +192,10 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
         pricePerNight < formData.priceRange[1]
       );
     });
+
     // console.log("filterF=======", filterF);
     setFetchedData(filterF);
+    // console.log(fetched, "data=cdcd===");
   }
   return (
     <Box
@@ -223,6 +252,21 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
                     />
                   </DemoContainer>
                 </LocalizationProvider> */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={["DateRangePicker"]}>
+                    <DateRangePicker
+                      // localeText={{ start: "Check-in", end: "Check-out" }}
+                      localeText={{ start: "", end: "" }}
+                      sx={{
+                        ".MuiInputBase-input": {
+                          padding: "5%",
+                        },
+                      }}
+                      onChange={handleInputChange}
+                      format="DD/MM/YYYY"
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
               </Box>
             </div>
           </Box>
@@ -283,6 +327,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={checkedItems?.smartPhone}
                       onChange={(e) => handleCheckboxChange(e, "smartPhone")}
                     />
                   }
@@ -292,6 +337,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={checkedItems?.miniBar}
                       onChange={(e) => handleCheckboxChange(e, "miniBar")}
                     />
                   }
@@ -300,14 +346,17 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={checkedItems?.Sauna}
                       onChange={(e) => handleCheckboxChange(e, "Sauna")}
                     />
                   }
                   label="Sauna"
                 />
+
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={checkedItems?.Breakfast}
                       onChange={(e) => handleCheckboxChange(e, "Breakfast")}
                     />
                   }
@@ -316,6 +365,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={checkedItems?.Hairdryer}
                       onChange={(e) => handleCheckboxChange(e, "Hairdryer")}
                     />
                   }
@@ -324,6 +374,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={checkedItems?.Coffeemaker}
                       onChange={(e) => handleCheckboxChange(e, "Coffeemaker")}
                     />
                   }
@@ -333,6 +384,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      checked={checkedItems?.WidesreenTv}
                       onChange={(e) => handleCheckboxChange(e, "WidesreenTv")}
                     />
                   }
@@ -346,9 +398,13 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
             <Button
               variant="contained"
               onClick={() => {
-                // console.log(formData);
+                if (bookingData.checkIn_checkOut.length === 0) {
+                  alert("please select booking dates");
+                  return;
+                }
+                console.log(formData);
                 filteropration();
-                // console.log(checkedItems);
+                console.log(checkedItems);
                 // dispatch(filterSearch({ formData, checkedItems }));
                 // dispatch(pagination({ pageNo: 1 }));
               }}

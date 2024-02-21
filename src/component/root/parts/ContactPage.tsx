@@ -51,7 +51,7 @@ const LeftsideButtonContainer = () => {
       <Stack direction="column" sx={{ mt: { xs: 1, sm: 4 } }}>
         {/* text */}
         <Box sx={{ marginLeft: "20px", marginBottom: "20px" }}>
-          <Typography variant="h5" color="primary.light">
+          <Typography variant="h5" color="secondary">
             Our Contact Us
           </Typography>
           <Typography variant="subtitle1" color="primary">

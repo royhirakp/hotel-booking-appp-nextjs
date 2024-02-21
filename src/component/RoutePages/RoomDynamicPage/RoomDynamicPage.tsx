@@ -17,7 +17,7 @@ import AddPhoto from "@/component/RoomDynamicPage/AddPhoto";
 import data from "@/data/Data";
 import { useGetUnitRoomQuery } from "@/redux/apiRequest/LoginRegister";
 const RoomDynamicPage = ({ id }: { id: any }) => {
-  console.log(id, "=====id");
+  // console.log(id, "=====id");
   const { data: fetchSingleRoomDta } = useGetUnitRoomQuery({
     id: "65b7fe2e1020b1f2470b8c3e",
   });
@@ -28,7 +28,7 @@ const RoomDynamicPage = ({ id }: { id: any }) => {
     images: [],
     comments: [],
   });
-  // console.log("fetchSingleRoomDta===", fetchSingleRoomDta);
+  console.log("fetchSingleRoomDta===", fetchSingleRoomDta);
   useEffect(() => {
     let item: any = data.find((item) => item.id * 1 === id * 1);
     setRoomData(item);
@@ -38,8 +38,8 @@ const RoomDynamicPage = ({ id }: { id: any }) => {
   return (
     <Box>
       <RoomComtaintHearderAndPrice
-        title={roomData?.title}
-        pricePerNight={roomData?.pricePerNight}
+        title={fetchSingleRoomDta?.title}
+        pricePerNight={fetchSingleRoomDta?.pricePerNight}
       />
       <MainContainer style={{}}>
         <Stack direction="row" gap={1} maxWidth="1500px" margin="auto">
@@ -51,10 +51,12 @@ const RoomDynamicPage = ({ id }: { id: any }) => {
               <RoomInfoB />
             </Box>
             <Box>
-              <TextInformationAboutRoom />
+              <TextInformationAboutRoom
+                info={fetchSingleRoomDta?.describtion}
+              />
             </Box>
             <Box sx={{ margin: "1% 0" }}>
-              <RoomService />
+              <RoomService service={fetchSingleRoomDta?.abalableServices} />
             </Box>
             <Box mt={1}>
               <AditionalRoomService />

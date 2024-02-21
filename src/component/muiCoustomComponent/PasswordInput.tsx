@@ -21,7 +21,7 @@ const PasswordInput = ({
   setValue: any;
   passwordError: any;
 }) => {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(true);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -50,7 +50,7 @@ const PasswordInput = ({
             }
           }}
           id="filled-adornment-password"
-          type={showPassword ? "text" : "password"}
+          type={!showPassword ? "text" : "password"}
           endAdornment={
             <InputAdornment position="end">
               <IconButton

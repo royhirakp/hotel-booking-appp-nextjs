@@ -7,7 +7,7 @@ import PoolIcon from "@mui/icons-material/Pool";
 import LocalBarIcon from "@mui/icons-material/LocalBar";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { handelNextsFromState, addRoomData } from "@/redux/slices/BookingSlice";
 const responsiveIconSize = {
   fontSize: {
@@ -18,7 +18,7 @@ const responsiveIconSize = {
 };
 const RoomCard = ({ setState, item }: { setState: any; item: any }) => {
   const router = useRouter();
-  // console.log("item====", item);
+  // console.log("item====", item.abalableServices);
   const { title, abalableServices, describtion, pricePerNight, imageurl } =
     item;
 
@@ -103,14 +103,15 @@ const ImageContainer = ({ imageurl }: { imageurl: string }) => {
     </Box>
   );
 };
-
+import NetworkWifiIcon from "@mui/icons-material/NetworkWifi";
+import BathtubIcon from "@mui/icons-material/Bathtub";
 const RoomdetailsContainer = ({
   title,
   abalableServices,
   describtion,
 }: {
   title: string;
-  abalableServices: string;
+  abalableServices: any;
   describtion: string;
 }) => {
   return (
@@ -142,16 +143,19 @@ const RoomdetailsContainer = ({
         <Stack direction="row" gap={1}>
           {[
             {
+              status: abalableServices?.WidesreenTv,
               id: 1,
               icon: <TvIcon sx={{ ...responsiveIconSize, color: "#e425d5" }} />,
             },
             {
+              status: abalableServices?.Sauna,
               id: 1,
               icon: (
                 <PoolIcon sx={{ ...responsiveIconSize, color: "#1b6eb6" }} />
               ),
             },
             {
+              status: abalableServices?.miniBar,
               id: 1,
               icon: (
                 <LocalBarIcon
@@ -160,6 +164,7 @@ const RoomdetailsContainer = ({
               ),
             },
             {
+              status: abalableServices?.Breakfast,
               id: 1,
               icon: (
                 <RestaurantIcon
@@ -167,10 +172,27 @@ const RoomdetailsContainer = ({
                 />
               ),
             },
-            // { id: 1, icon: <BathtubIcon sx={responsiveIconSize} /> },
-            // { id: 1, icon: <WifiIcon sx={responsiveIconSize} /> },
+            {
+              status: abalableServices?.smartPhone,
+
+              id: 1,
+              icon: <BathtubIcon sx={responsiveIconSize} />,
+            },
+            {
+              status: abalableServices?.Hairdryer,
+
+              id: 1,
+              icon: <NetworkWifiIcon sx={responsiveIconSize} />,
+            },
           ].map((item, i) => {
-            return <Box key={i * 0.25}>{item.icon}</Box>;
+            return (
+              <Box
+                sx={{ display: `${item.status ? "block" : "none"}` }}
+                key={i * 0.25}
+              >
+                {item.icon}
+              </Box>
+            );
           })}
         </Stack>
       </Box>
@@ -188,6 +210,7 @@ const BookingAction = ({
   item: any;
 }) => {
   const dispatch = useAppDispatch();
+  const bookingData = useAppSelector((s) => s.Booking);
   // console.log("bokking asction ", item);
   return (
     <Box
@@ -216,6 +239,12 @@ const BookingAction = ({
             },
           }}
           onClick={() => {
+            if (bookingData.checkIn_checkOut.length === 0) {
+              alert(
+                'please select booking dates on the "Booking details". there is no functionlity in the mobile version . try this app in desktop version . mobile version is only for the responsive design '
+              );
+              return;
+            }
             const userInfo = {
               Name: "Jhon",
               Surname: "Doe",
@@ -232,6 +261,7 @@ const BookingAction = ({
             };
             dispatch(handelNextsFromState({}));
             dispatch(addRoomData({ item, userInfo }));
+            // console.log("bookingData==", bookingData.checkIn_checkOut);
           }}
         >
           Select Booking

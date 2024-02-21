@@ -40,6 +40,7 @@ interface susessResponse {
   status: number;
   data: {
     token: string;
+    userId: string;
   };
 }
 const LoginButton = styled(LoadingButton)(({ theme }) => ({
@@ -61,7 +62,7 @@ const LoginButton = styled(LoadingButton)(({ theme }) => ({
 
 const LoginForm = () => {
   const router = useRouter();
-  const [Login, { isLoading, isSuccess, isError, error }] = useLoginMutation();
+  const [Login, { isLoading, isError, error }] = useLoginMutation();
 
   const {
     register,
@@ -72,11 +73,15 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await Login(data);
-      // console.log(res, isSuccess);
+      console.log(res);
       if ((res as susessResponse)?.data) {
         // console.log((res as susessResponse).data.token);
 
         localStorage.setItem("loginStatus", (res as susessResponse).data.token);
+        localStorage.setItem(
+          "userIdForSappingApp",
+          (res as susessResponse).data.userId
+        );
         router.push("/webapp/Home");
       }
     } catch (error) {
@@ -210,12 +215,7 @@ const LoginForm = () => {
                 }}
               />
 
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
+              <Modal open={open} onClose={handleClose}>
                 <Box
                   sx={{
                     position: "absolute" as "absolute",
@@ -226,15 +226,12 @@ const LoginForm = () => {
                     bgcolor: "background.paper",
                     boxShadow: 24,
                     p: 4,
+                    borderRadius: "10px",
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: 2,
                   }}
                 >
-                  <button
-                    onClick={handleClose}
-                    style={{ float: "right", cursor: "pointer" }}
-                  >
-                    close modal
-                  </button>
-
                   {/* {errors.password && <span></span>} */}
                   <Typography
                     variant="subtitle1"
@@ -243,9 +240,15 @@ const LoginForm = () => {
                   >
                     {isError ? (error as RequestError)?.data?.message : ""}
                   </Typography>
+                  <button
+                    onClick={handleClose}
+                    style={{ float: "right", cursor: "pointer" }}
+                  >
+                    close modal
+                  </button>
                 </Box>
               </Modal>
-              <Typography variant="body1" textAlign="center" color="error">
+              <Typography variant="subtitle2" textAlign="center" color="error">
                 {isError ? (error as RequestError)?.data?.message : ""}
               </Typography>
             </FormControl>

@@ -63,7 +63,6 @@ const Headding = () => {
     </>
   );
 };
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useGetRoomsForHomeQuery } from "@/redux/apiRequest/LoginRegister";
 const SwiperComponent = () => {
   const { data, isLoading } = useGetRoomsForHomeQuery({});
@@ -139,7 +138,7 @@ const SwiperComponent = () => {
         // 2100: { slidesPerView: 5 },
         // 2540: { slidesPerView: 6 },
       }}
-      style={{ padding: "15px 10px 20px 10px", boxSizing: "border-box" }}
+      style={{ padding: "10px", boxSizing: "border-box" }}
     >
       <Box sx={{ paddingTop: "50px" }}>
         <SwiperControlButton />
@@ -156,6 +155,15 @@ const SwiperComponent = () => {
         data?.roomsData?.map((item: any, i: any) => {
           return (
             <SwiperSlide key={i}>
+              {/* <div
+                style={{
+                  height: 200,
+                  width: 200,
+                  border: "1px solid red",
+                }}
+              >
+                hirak
+              </div> */}
               <HotelProductCard item={item} />
             </SwiperSlide>
           );
@@ -166,7 +174,15 @@ const SwiperComponent = () => {
 };
 
 const HotelProductCard: React.FC<{
-  item: { imageurl: string; id: string };
+  item: {
+    imageurl: string;
+    id: string;
+    abalableServices: any;
+    _id: string;
+    title: string;
+    pricePerNight: string;
+    describtion: string;
+  };
 }> = ({ item }) => {
   // console.log("itemmm===", item);
   return (
@@ -174,11 +190,12 @@ const HotelProductCard: React.FC<{
       elevation={12}
       sx={{
         display: "flex",
-
+        minHeight: 450,
         width: {
           xs: "215px",
           sm: "260px",
         },
+        justifyContent: "space-around",
         flexDirection: "column",
         gap: "0.4rem",
         padding: "1rem",
@@ -186,7 +203,7 @@ const HotelProductCard: React.FC<{
         margin: "auto",
         transition: "all 300ms ease-in",
         "&:hover": {
-          scale: "1.015",
+          // scale: "1.015",
           boxShadow: "0px 72px 49px -51px, rgba(136,160,255,0.21)",
           background:
             "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(136,160,255,0.46) 217.91%)",
@@ -194,7 +211,7 @@ const HotelProductCard: React.FC<{
       }}
     >
       {/* IAMGE */}
-      <Box sx={{ width: "100%", borderRadius: "10px" }}>
+      <Box sx={{ width: "100%", borderRadius: "10px", height: 170 }}>
         <Image
           src={item?.imageurl}
           width={1000}
@@ -204,7 +221,7 @@ const HotelProductCard: React.FC<{
             height: "100%",
             borderRadius: "10px",
           }}
-          alt=""
+          alt="room image"
         />
       </Box>
       {/* TEXT */}
@@ -213,17 +230,17 @@ const HotelProductCard: React.FC<{
         sx={{ fontWeight: "600", color: "gray", paddingTop: "5px" }}
       >
         <span style={{ color: "orange" }}>$</span>
-        <span>450</span>
+        <span>{item?.pricePerNight}</span>
       </Typography>
       <Box>
         <Typography
           variant="subtitle2"
           sx={{ color: "#1f3e72", fontWeight: "bold" }}
         >
-          Name of the hotel
+          {item.title}, Name of the hotel
         </Typography>
         <Typography variant="body1" sx={{ color: "gray", fontWeight: "600" }}>
-          Lorem ipsum, dolor sit amet
+          {item.describtion}
         </Typography>
       </Box>
       <Box sx={{ width: "100%" }}>
@@ -235,13 +252,20 @@ const HotelProductCard: React.FC<{
         >
           Services
         </Typography>
-        <CardActions id={item.id} />
+        <CardActions id={item._id} abalableServices={item?.abalableServices} />
       </Box>
     </Paper>
   );
 };
 import { useRouter } from "next/navigation";
-const CardActions = ({ id }: { id: string }) => {
+import WcIcon from "@mui/icons-material/Wc";
+const CardActions = ({
+  id,
+  abalableServices,
+}: {
+  id: string;
+  abalableServices: any;
+}) => {
   const router = useRouter();
   return (
     <>
@@ -251,12 +275,15 @@ const CardActions = ({ id }: { id: string }) => {
         justifyContent="space-between"
         color="primary"
       >
-        <WifiIcon color="primary" />
-        <FireExtinguisherIcon color="primary" />
-        <PoolIcon color="primary" />
-        <PetsIcon color="primary" />
-        <FreeBreakfastIcon color="primary" />
-        <DeckIcon color="primary" />
+        {abalableServices.Breakfast && <WifiIcon color="primary" />}
+        {abalableServices.Coffeemaker && (
+          <FireExtinguisherIcon color="primary" />
+        )}
+        {abalableServices.Hairdryer && <PoolIcon color="primary" />}
+        {abalableServices.Sauna && <PetsIcon color="primary" />}
+        {abalableServices.WidesreenTv && <FreeBreakfastIcon color="primary" />}
+        {abalableServices.miniBar && <DeckIcon color="primary" />}
+        {abalableServices.smartPhone && <WcIcon color="primary" />}
       </Stack>
       <Stack mt={3} sx={{}}>
         <Button

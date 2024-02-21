@@ -11,6 +11,7 @@ import {
   setPaymentInfo,
 } from "@/redux/slices/BookingSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useBookRoomMutation } from "@/redux/apiRequest/LoginRegister";
 const CheckoutInformationPage = ({ handelNext }: { handelNext: any }) => {
   return (
     <div>
@@ -228,6 +229,7 @@ const PaymentDetails = ({ handelNext }: { handelNext: any }) => {
 const PaypalComponetPayment = ({ handelNext }: { handelNext: any }) => {
   const dispatch = useAppDispatch();
   const checkoutInfo = useAppSelector((S) => S.Booking);
+  const [BookRoom, { isError, isSuccess, isLoading }] = useBookRoomMutation({});
   return (
     <Box
       sx={{
@@ -258,13 +260,41 @@ const PaypalComponetPayment = ({ handelNext }: { handelNext: any }) => {
             borderRadius: 0,
             ".MuiButton-root": {},
           }}
-          onClick={() => {
-            handelNext();
+          onClick={async () => {
+            if (!localStorage.getItem("userIdForSappingApp")) {
+              alert("login First");
+              return;
+            }
+            if (
+              checkoutInfo.checkIn_checkOut[0].CheckInMonthName !==
+              checkoutInfo.checkIn_checkOut[1].CheckOutMonthName
+            ) {
+              alert(
+                "please select the booking check-in checkout dates on same month "
+              );
+              return;
+            }
+
             dispatch(setPaymentInfo({ data: "papal" }));
-            console.log("make api call on backend, from paypal", checkoutInfo);
+
+            const res = await BookRoom({
+              roomId: checkoutInfo.room._id,
+              monthAndDate: [
+                {
+                  monthName: checkoutInfo.checkIn_checkOut[0].CheckInMonthName,
+                  dates: [
+                    checkoutInfo.checkIn_checkOut[0].dates,
+                    checkoutInfo.checkIn_checkOut[1].dates,
+                  ],
+                },
+              ],
+              userId: localStorage.getItem("userIdForSappingApp"),
+            });
+            // console.log(res);
+            handelNext();
           }}
         >
-          pay
+          pay {isLoading ? "Lodinggg..." : "dONE"}
         </Button>
       </Stack>
     </Box>

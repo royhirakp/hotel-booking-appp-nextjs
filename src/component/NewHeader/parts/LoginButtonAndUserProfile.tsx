@@ -101,6 +101,7 @@ const LoginButtonAndUserProfile = () => {
             <MenuItem
               onClick={() => {
                 localStorage.removeItem("loginStatus");
+                localStorage.removeItem("userIdForSappingApp");
                 setAnchorEl(null);
                 router.push("/login");
               }}

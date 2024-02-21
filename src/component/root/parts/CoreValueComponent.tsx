@@ -13,10 +13,13 @@ import {
 import "react-accessible-accordion/dist/fancy-example.css";
 const CoreValueComponent = () => {
   return (
-    <MainContainer style={{}}>
+    <MainContainer
+      style={{
+        bgcolor: "secondary.dark",
+      }}
+    >
       <Box
         sx={{
-          bgcolor: "secondary.dark",
           padding: "15px 0",
           maxWidth: "1500px",
           margin: "auto",

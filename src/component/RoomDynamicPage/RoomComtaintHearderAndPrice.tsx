@@ -79,7 +79,7 @@ const RoomComtaintHearderAndPrice = ({
                 sx={{ display: { xs: "flex", md: "none" } }}
               >
                 <Button onClick={handelModal} variant="contained">
-                  Check Abilibity
+                  Check Abilibity & Book Room
                 </Button>
 
                 <BasicModal open={open} setOpen={setOpen} />
