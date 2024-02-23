@@ -183,7 +183,7 @@ const NewHeader = () => {
                 // }}
                 sx={{
                   fontSize: {
-                    xs: "13px",
+                    xs: "15px",
                   },
                   "&:hover": {
                     background: "#0d6efd",

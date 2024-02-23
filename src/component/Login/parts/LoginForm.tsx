@@ -103,6 +103,11 @@ const LoginForm = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [ForgetPasswordModalopen, setForgetPasswordModal] =
+    React.useState(false);
+  const forgetPasswordhandleOpen = () => setForgetPasswordModal(true);
+  const forgetPasswordhandleClose = () => setForgetPasswordModal(false);
+
   useEffect(() => {
     if (isError) {
       handleOpen();
@@ -152,7 +157,6 @@ const LoginForm = () => {
               }}
             >
               <TextField
-                id="outlined-basic"
                 label="Email"
                 variant="outlined"
                 {...register("email", {
@@ -165,7 +169,6 @@ const LoginForm = () => {
                     : ""
                 }
                 error={!(errors.email == undefined) || !emailValidationS}
-                sx={{ height: "75px" }}
                 onChange={(e) => {
                   if (e.target.value.length < 6) return;
 
@@ -181,7 +184,15 @@ const LoginForm = () => {
                   }
                 }}
               />
-
+              <small
+                style={{
+                  color: "red",
+                }}
+              >
+                *NB for test the app:
+                <br />
+                email: royhirakp@gmail.com and password: 123456Aa@
+              </small>
               {/* {errors.email && <span>email letters</span>} */}
               <TextField
                 id="outlined-password-input"
@@ -267,7 +278,13 @@ const LoginForm = () => {
                 Login
               </LoginButton>
               {/* rember me */}
-              <Link href="#ggg">forget password?</Link>
+              <Link href="#" onClick={forgetPasswordhandleOpen}>
+                forget password?
+              </Link>
+              <ForgetPasswordModal
+                handleClose={forgetPasswordhandleClose}
+                open={ForgetPasswordModalopen}
+              />
               <input type="submit" style={{ display: "none" }} />
             </Box>
             <Box pt={2} pb={1}>
@@ -284,7 +301,154 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+const ForgetPasswordModal = ({
+  handleClose,
+  open,
+}: {
+  handleClose: any;
+  open: any;
+}) => {
+  const [forgetPasswordOption, setForgetPasswordOption] =
+    useState<Boolean | null>(null);
 
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  function handelGetTheOtpInTheOTPButton() {
+    if (forgetPasswordOption === null) {
+      setForgetPasswordOption(false);
+      console.log("callinggggggggg2222");
+    }
+  }
+  function handelGetTheOtpInTheMailButton() {
+    if (forgetPasswordOption === null) {
+      setForgetPasswordOption(true);
+      console.log("callinggggggggg1111");
+    }
+  }
+
+  return (
+    <Modal open={open} onClose={handleClose}>
+      <Box
+        sx={{
+          position: "absolute" as "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 400,
+          bgcolor: "background.paper",
+          boxShadow: 24,
+          p: 4,
+          borderRadius: "10px",
+        }}
+      >
+        <Typography variant="subtitle1" textAlign="center" mb={2}>
+          FORGET PASSWORD FORM
+        </Typography>
+        <form action="">
+          <TextField fullWidth placeholder="your email" type="email" />
+          <small
+            style={{
+              marginTop: "10px",
+              display: "inline-block",
+            }}
+          >
+            *nd: you can do this in two methods:
+            <br />
+            1. one is by get the OTP in the mail
+            <br />
+            2. and another is get the link in the email
+          </small>
+          <Stack direction="row" spacing={2} mt={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handelGetTheOtpInTheMailButton}
+            >
+              Get Otp in the mail
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handelGetTheOtpInTheOTPButton}
+            >
+              Get link in the mail
+            </Button>
+          </Stack>
+          {forgetPasswordOption === null ? (
+            <></>
+          ) : (
+            <Box>
+              {forgetPasswordOption ? (
+                <>
+                  <Typography
+                    variant="body1"
+                    textAlign="center"
+                    color="error"
+                    mt={2}
+                  >
+                    OTP for reset the password has send to your mail. Please
+                    check your mail
+                  </Typography>
+                  <Stack direction="row" spacing={2} mt={1}>
+                    <TextField
+                      placeholder="new password"
+                      sx={{
+                        width: "80%",
+                      }}
+                      type={showPassword ? "text" : "password"}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {!showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <TextField type="text" placeholder="OTP" />
+                  </Stack>
+                  <Stack mt={3}>
+                    <Button variant="contained">Reset Password</Button>
+                  </Stack>
+                </>
+              ) : (
+                <>
+                  <Typography
+                    variant="body1"
+                    textAlign="center"
+                    p={3}
+                    color="error"
+                  >
+                    link for reset the password has send to your mail. Please
+                    check your mail
+                  </Typography>
+                </>
+              )}
+            </Box>
+          )}
+        </form>
+      </Box>
+    </Modal>
+  );
+};
 function IconButtons() {
   return (
     <Stack direction="row" spacing={1} pb={3}>

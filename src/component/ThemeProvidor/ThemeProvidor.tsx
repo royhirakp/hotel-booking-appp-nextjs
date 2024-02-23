@@ -104,6 +104,21 @@ const ThemeProvidor: React.FC<ContainerProps> = ({ children }) => {
           },
         },
       },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            borderRadius: "7px",
+            ".MuiInputBase-root": {},
+            fieldset: {
+              // border: "none",
+              border: "1px solid #437C17",
+            },
+            // ".MuiOutlinedInput-notchedOutline": {
+            //   border: "1px solid ",
+            // },
+          },
+        },
+      },
       MuiButton: {
         styleOverrides: {
           root: {
