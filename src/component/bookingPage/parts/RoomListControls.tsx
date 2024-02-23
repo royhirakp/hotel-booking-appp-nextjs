@@ -17,8 +17,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setBookingDates } from "@/redux/slices/BookingSlice";
-const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
+const RoomListControls = ({
+  setFetchedData,
+  reduxData,
+}: {
+  setFetchedData: any;
+  reduxData: any;
+}) => {
   // const dispatch = useAppDispatch();
+  // console.log(reduxData, "==============================reduxData");
   const bookingData = useAppSelector((s) => s.Booking);
   const [checkedItems, setCheckedItems] = React.useState<{
     [key: string]: boolean;
@@ -122,7 +129,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
     let endMonthIndex: any = "0";
 
     // find the items which have the same months ;
-    let filterA = data.filter((item) => {
+    let filterA = reduxData?.filter((item: any) => {
       for (let i in item.abilibiity) {
         if (item.abilibiity[i].monthNmae === startDate[1]) {
           startMonthIndex = i + "";
@@ -130,8 +137,9 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
         }
       }
     });
+    // console.log(filterA);
 
-    let filterB = filterA.filter((item) => {
+    let filterB = filterA.filter((item: any) => {
       for (let i in item.abilibiity) {
         if (item.abilibiity[i].monthNmae === endDate[1]) {
           endMonthIndex = i + "";
@@ -142,22 +150,23 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
 
     //filter date
     // startmonthindex
-    let filterC = filterB.filter((item) => {
+    let filterC = filterB.filter((item: any) => {
       let array: any = item.abilibiity[startMonthIndex].bookDates;
-      if (!array.includes(startDate[0] * 1)) {
+      // console.log(!array.includes(startDate[0] * 1));
+      if (array.includes(startDate[0] * 1)) {
         return true;
       }
     });
-
+    console.log(filterC, "==filterA");
     // end month index
-    let filterD = filterC.filter((item) => {
+    let filterD = filterC.filter((item: any) => {
       let array: any = item.abilibiity[endMonthIndex].bookDates;
-      if (!array.includes(endDate[0] * 1)) {
+      if (array.includes(endDate[0] * 1)) {
         return true;
       }
     });
 
-    let filterE = filterD.filter((item) => {
+    let filterE = filterD.filter((item: any) => {
       // console.log(item.abalableServices, checkedItems);
       let temp = false;
       for (let i in checkedItems) {
@@ -184,7 +193,7 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
     });
 
     // filter data by the price range
-    let filterF = filterE.filter((item) => {
+    let filterF = filterE.filter((item: any) => {
       const pricePerNight = parseFloat(item.pricePerNight);
       return (
         !isNaN(pricePerNight) && // Check if the conversion was successful
@@ -402,9 +411,9 @@ const RoomListControls = ({ setFetchedData }: { setFetchedData: any }) => {
                   alert("please select booking dates");
                   return;
                 }
-                console.log(formData);
+                // console.log(formData);
                 filteropration();
-                console.log(checkedItems);
+                // console.log(checkedItems);
                 // dispatch(filterSearch({ formData, checkedItems }));
                 // dispatch(pagination({ pageNo: 1 }));
               }}

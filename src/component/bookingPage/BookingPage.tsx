@@ -69,6 +69,8 @@ const MultiStepForm = ({
   let element;
   const formStage = useAppSelector((s) => s.Booking.bookingStage);
   let { data: reduxData, isLoading } = useGetAllRoomsQuery({});
+
+  // console.log(reduxData, "====reduxData");
   switch (formStage) {
     case 0:
       element = (

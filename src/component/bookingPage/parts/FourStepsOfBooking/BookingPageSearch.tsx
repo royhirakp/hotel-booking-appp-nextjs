@@ -64,7 +64,10 @@ const BookingPageSearch = ({
             minWidth: "240px",
           }}
         >
-          <RoomListControls setFetchedData={setFetchedData} />
+          <RoomListControls
+            setFetchedData={setFetchedData}
+            reduxData={reduxData?.roomsData || []}
+          />
         </Box>
         <Box flex={5} mt={2}>
           {isLoading && (
