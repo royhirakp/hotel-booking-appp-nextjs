@@ -22,11 +22,7 @@ import { styled } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
 import { useLoginMutation } from "@/redux/apiRequest/LoginRegister";
 import Modal from "@mui/material/Modal";
-
-type Inputs = {
-  email: string;
-  password: string;
-};
+import Cookies from "js-cookie";
 
 interface RequestError {
   status: number;
@@ -36,6 +32,10 @@ interface RequestError {
     statusCode: string;
   };
 }
+type Inputs = {
+  email: string;
+  password: string;
+};
 interface susessResponse {
   status: number;
   data: {
@@ -63,27 +63,38 @@ const LoginButton = styled(LoadingButton)(({ theme }) => ({
 const LoginForm = () => {
   const router = useRouter();
   const [Login, { isLoading, isError, error }] = useLoginMutation();
-
+  const [rememberMe, setRememberMe] = useState<any>(false);
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<Inputs>();
+  // console.log(getValues("email"), watch("email"));
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await Login(data);
-      console.log(res);
-      if ((res as susessResponse)?.data) {
-        // console.log((res as susessResponse).data.token);
-
-        localStorage.setItem("loginStatus", (res as susessResponse).data.token);
-        localStorage.setItem(
-          "userIdForSappingApp",
-          (res as susessResponse).data.userId
-        );
-        router.push("/webapp/Home");
+      if (rememberMe) {
+        Cookies.set("shoppingAppUserEmail", getValues("email"));
+        Cookies.set("shoppingAppUserPassword", getValues("password"));
+        console.log(Cookies.get("shoppingAppUserEmail"));
+        console.log(Cookies.get("shoppingAppUserPassword"));
+        let pas = Cookies.get("shoppingAppUserPassword");
+        console.log("pass===", typeof pas);
       }
+
+      // const res = await Login(data);
+      // console.log(res);
+      // if ((res as susessResponse)?.data) {
+      //   // console.log((res as susessResponse).data.token);
+      //   localStorage.setItem("loginStatus", (res as susessResponse).data.token);
+      //   localStorage.setItem(
+      //     "userIdForSappingApp",
+      //     (res as susessResponse).data.userId
+      //   );
+      //   router.push("/webapp/Home");
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -107,7 +118,13 @@ const LoginForm = () => {
     React.useState(false);
   const forgetPasswordhandleOpen = () => setForgetPasswordModal(true);
   const forgetPasswordhandleClose = () => setForgetPasswordModal(false);
+  const [password, setPassword] = useState("123456@Aa");
 
+  useEffect(() => {
+    let pas = Cookies.get("shoppingAppUserPassword");
+    setValue("password", pas || "");
+    setValue("email", Cookies.get("shoppingAppUserEmail") || "");
+  }, [setValue]);
   useEffect(() => {
     if (isError) {
       handleOpen();
@@ -195,8 +212,9 @@ const LoginForm = () => {
               </small>
               {/* {errors.email && <span>email letters</span>} */}
               <TextField
-                id="outlined-password-input"
-                label="Password"
+                label="password"
+                placeholder="password..."
+                // onChange={(e)=>setPassword(e.target.value)}
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 {...register("password", {
@@ -209,7 +227,6 @@ const LoginForm = () => {
                     : ""
                 }
                 error={!(errors.password == undefined)}
-                sx={{ height: "75px" }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -259,14 +276,32 @@ const LoginForm = () => {
                   </button>
                 </Box>
               </Modal>
-              <Typography variant="subtitle2" textAlign="center" color="error">
-                {isError ? (error as RequestError)?.data?.message : ""}
-              </Typography>
+              {isError ? (
+                <Typography
+                  variant="subtitle2"
+                  textAlign="center"
+                  color="error"
+                >
+                  {isError ? (error as RequestError)?.data?.message : ""}
+                </Typography>
+              ) : (
+                ""
+              )}
             </FormControl>
 
             <Box sx={{ width: "80%" }}>
               <FormGroup>
-                <FormControlLabel control={<Checkbox />} label="remember me?" />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={(e) => {
+                        const { name, checked } = e.target;
+                        setRememberMe(checked);
+                      }}
+                    />
+                  }
+                  label="remember me?"
+                />
               </FormGroup>
               <LoginButton
                 variant="contained"
