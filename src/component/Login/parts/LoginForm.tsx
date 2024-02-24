@@ -78,23 +78,23 @@ const LoginForm = () => {
       if (rememberMe) {
         Cookies.set("shoppingAppUserEmail", getValues("email"));
         Cookies.set("shoppingAppUserPassword", getValues("password"));
-        console.log(Cookies.get("shoppingAppUserEmail"));
-        console.log(Cookies.get("shoppingAppUserPassword"));
-        let pas = Cookies.get("shoppingAppUserPassword");
-        console.log("pass===", typeof pas);
+        // console.log(Cookies.get("shoppingAppUserEmail"));
+        // console.log(Cookies.get("shoppingAppUserPassword"));
+        // let pas = Cookies.get("shoppingAppUserPassword");
+        // console.log("pass===", typeof pas);
       }
 
-      // const res = await Login(data);
-      // console.log(res);
-      // if ((res as susessResponse)?.data) {
-      //   // console.log((res as susessResponse).data.token);
-      //   localStorage.setItem("loginStatus", (res as susessResponse).data.token);
-      //   localStorage.setItem(
-      //     "userIdForSappingApp",
-      //     (res as susessResponse).data.userId
-      //   );
-      //   router.push("/webapp/Home");
-      // }
+      const res = await Login(data);
+      console.log(res);
+      if ((res as susessResponse)?.data) {
+        // console.log((res as susessResponse).data.token);
+        localStorage.setItem("loginStatus", (res as susessResponse).data.token);
+        localStorage.setItem(
+          "userIdForSappingApp",
+          (res as susessResponse).data.userId
+        );
+        router.push("/webapp/Home");
+      }
     } catch (error) {
       console.log(error);
     }
