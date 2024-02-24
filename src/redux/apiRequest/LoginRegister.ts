@@ -93,7 +93,7 @@ export const userLoginRegister = createApi({
       }),
       getUnitRoom: builder.query({
         query({ id }) {
-          console.log("request comming", id);
+          // console.log("request comming", id);
           return {
             url: `/room/unit/${id}`,
             method: "GET",

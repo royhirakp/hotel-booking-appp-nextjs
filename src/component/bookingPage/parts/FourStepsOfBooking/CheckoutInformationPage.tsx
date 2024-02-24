@@ -10,6 +10,9 @@ import {
   addAditionalService,
   setPaymentInfo,
 } from "@/redux/slices/BookingSlice";
+
+import { LoadingButton } from "@mui/lab";
+
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useBookRoomMutation } from "@/redux/apiRequest/LoginRegister";
 const CheckoutInformationPage = ({ handelNext }: { handelNext: any }) => {
@@ -80,34 +83,95 @@ const UserandRoomDetails = () => {
 
 const PaymentDetails = ({ handelNext }: { handelNext: any }) => {
   const [paymentState, setPaymentState] = useState(1);
+  const dispatch = useAppDispatch();
+  const checkoutInfo = useAppSelector((S) => S.Booking);
+  const [BookRoom, { isError, isSuccess, isLoading }] = useBookRoomMutation({});
+  async function handelPayment(paymentMethod: string) {
+    if (!localStorage.getItem("userIdForSappingApp")) {
+      alert("login First");
+      return;
+    }
+    if (
+      checkoutInfo.checkIn_checkOut[0].CheckInMonthName !==
+      checkoutInfo.checkIn_checkOut[1].CheckOutMonthName
+    ) {
+      alert("please select the booking check-in checkout dates on same month ");
+      return;
+    }
 
+    dispatch(setPaymentInfo({ data: paymentMethod }));
+
+    const res = await BookRoom({
+      roomId: checkoutInfo.room._id,
+      monthAndDate: [
+        {
+          monthName: checkoutInfo.checkIn_checkOut[0].CheckInMonthName,
+          dates: [
+            checkoutInfo.checkIn_checkOut[0].dates,
+            checkoutInfo.checkIn_checkOut[1].dates,
+          ],
+        },
+      ],
+      userId: localStorage.getItem("userIdForSappingApp"),
+    });
+    console.log(
+      {
+        roomId: checkoutInfo.room._id,
+        monthAndDate: [
+          {
+            monthName: checkoutInfo.checkIn_checkOut[0].CheckInMonthName,
+            dates: [
+              checkoutInfo.checkIn_checkOut[0].dates,
+              checkoutInfo.checkIn_checkOut[1].dates,
+            ],
+          },
+        ],
+        userId: localStorage.getItem("userIdForSappingApp"),
+      },
+
+      res
+    );
+    // handelNext();
+  }
   let PaymentComponet;
   switch (paymentState) {
     case 0:
       PaymentComponet = (
         <div style={{ height: "100%" }}>
-          <PaypalComponetPayment handelNext={handelNext} />
+          <PaypalComponetPayment
+            isLoading={isLoading}
+            handelPayment={handelPayment}
+          />
         </div>
       );
       break;
     case 1:
       PaymentComponet = (
         <div style={{ height: "100%" }}>
-          <CraditCardComponent handelNext={handelNext} />
+          <CraditCardComponent
+            isLoading={isLoading}
+            handelPayment={handelPayment}
+          />
         </div>
       );
       break;
     case 2:
       PaymentComponet = (
         <div style={{ height: "100%" }}>
-          <BankTransferComponant handelNext={handelNext} />
+          <BankTransferComponant
+            isLoading={isLoading}
+            handelPayment={handelPayment}
+          />
         </div>
       );
       break;
     case 3:
       PaymentComponet = (
         <Box width="100%" sx={{ height: "100%" }}>
-          <PayOnArivalComponent handelNext={handelNext} />
+          <PayOnArivalComponent
+            isLoading={isLoading}
+            handelPayment={handelPayment}
+          />
         </Box>
       );
       break;
@@ -226,10 +290,13 @@ const PaymentDetails = ({ handelNext }: { handelNext: any }) => {
   );
 };
 
-const PaypalComponetPayment = ({ handelNext }: { handelNext: any }) => {
-  const dispatch = useAppDispatch();
-  const checkoutInfo = useAppSelector((S) => S.Booking);
-  const [BookRoom, { isError, isSuccess, isLoading }] = useBookRoomMutation({});
+const PaypalComponetPayment = ({
+  handelPayment,
+  isLoading,
+}: {
+  isLoading: boolean;
+  handelPayment: any;
+}) => {
   return (
     <Box
       sx={{
@@ -252,58 +319,32 @@ const PaypalComponetPayment = ({ handelNext }: { handelNext: any }) => {
       </Typography>
       <TextField label="paypal id" sx={{ width: "40%" }} />
       <Stack>
-        <Button
+        <LoadingButton
           variant="contained"
+          loading={isLoading}
           sx={{
             width: "100px",
             padding: "8px",
             borderRadius: 0,
-            ".MuiButton-root": {},
           }}
-          onClick={async () => {
-            if (!localStorage.getItem("userIdForSappingApp")) {
-              alert("login First");
-              return;
-            }
-            if (
-              checkoutInfo.checkIn_checkOut[0].CheckInMonthName !==
-              checkoutInfo.checkIn_checkOut[1].CheckOutMonthName
-            ) {
-              alert(
-                "please select the booking check-in checkout dates on same month "
-              );
-              return;
-            }
-
-            dispatch(setPaymentInfo({ data: "papal" }));
-
-            const res = await BookRoom({
-              roomId: checkoutInfo.room._id,
-              monthAndDate: [
-                {
-                  monthName: checkoutInfo.checkIn_checkOut[0].CheckInMonthName,
-                  dates: [
-                    checkoutInfo.checkIn_checkOut[0].dates,
-                    checkoutInfo.checkIn_checkOut[1].dates,
-                  ],
-                },
-              ],
-              userId: localStorage.getItem("userIdForSappingApp"),
-            });
-            // console.log(res);
-            handelNext();
+          onClick={() => {
+            handelPayment("papal");
           }}
         >
-          pay {isLoading ? "Lodinggg..." : "dONE"}
-        </Button>
+          pay
+        </LoadingButton>
       </Stack>
     </Box>
   );
 };
 
-const CraditCardComponent = ({ handelNext }: { handelNext: any }) => {
-  const dispatch = useAppDispatch();
-  const checkoutInfo = useAppSelector((S) => S.Booking);
+const CraditCardComponent = ({
+  handelPayment,
+  isLoading,
+}: {
+  isLoading: boolean;
+  handelPayment: any;
+}) => {
   return (
     <Stack
       sx={{ padding: "1%", height: "100%" }}
@@ -421,34 +462,33 @@ const CraditCardComponent = ({ handelNext }: { handelNext: any }) => {
         </Box>
 
         <Stack sx={{ justifyContent: "center" }}>
-          <Button
+          <LoadingButton
             variant="contained"
+            loading={isLoading}
             sx={{
               width: "100px",
               padding: "8px",
               borderRadius: 0,
-              ".MuiButton-root": {},
             }}
             onClick={() => {
-              handelNext();
-              dispatch(setPaymentInfo({ data: "CraditCard" }));
-              console.log(
-                "make api call on backend, credit cartddddddd fromm===== ",
-                checkoutInfo
-              );
+              handelPayment("CraditCard");
             }}
           >
             pay
-          </Button>
+          </LoadingButton>
         </Stack>
       </Stack>
     </Stack>
   );
 };
 
-const BankTransferComponant = ({ handelNext }: { handelNext: any }) => {
-  const dispatch = useAppDispatch();
-  const checkoutInfo = useAppSelector((S) => S.Booking);
+const BankTransferComponant = ({
+  handelPayment,
+  isLoading,
+}: {
+  isLoading: boolean;
+  handelPayment: any;
+}) => {
   return (
     <Stack
       sx={{ padding: "10%", height: "100%" }}
@@ -500,31 +540,33 @@ const BankTransferComponant = ({ handelNext }: { handelNext: any }) => {
         </Typography>
         <TextField />
         <Stack sx={{ justifyContent: "center" }} pl={2}>
-          <Button
+          <LoadingButton
             variant="contained"
+            loading={isLoading}
             sx={{
               width: "100px",
               padding: "8px",
               borderRadius: 0,
-              ".MuiButton-root": {},
             }}
             onClick={() => {
-              dispatch(setPaymentInfo({ data: "Bank Transfer" }));
-              console.log("make api call on backend ", checkoutInfo);
-              handelNext();
+              handelPayment("Bank Transfer");
             }}
           >
             pay
-          </Button>
+          </LoadingButton>
         </Stack>
       </Stack>
     </Stack>
   );
 };
 
-const PayOnArivalComponent = ({ handelNext }: { handelNext: any }) => {
-  const dispatch = useAppDispatch();
-  const checkoutInfo = useAppSelector((S) => S.Booking);
+const PayOnArivalComponent = ({
+  handelPayment,
+  isLoading,
+}: {
+  isLoading: boolean;
+  handelPayment: any;
+}) => {
   return (
     <Stack
       direction="column"
@@ -539,25 +581,20 @@ const PayOnArivalComponent = ({ handelNext }: { handelNext: any }) => {
         <TextareaAutosize maxRows={10} minRows={9} />
       </Stack>
       <Stack direction="row" justifyContent="center">
-        <Button
+        <LoadingButton
           variant="contained"
+          loading={isLoading}
           sx={{
             width: "100px",
             padding: "8px",
             borderRadius: 0,
-            ".MuiButton-root": {},
           }}
           onClick={() => {
-            dispatch(setPaymentInfo({ data: "PayOn Arival" }));
-            handelNext();
-            console.log(
-              "make api call on backend from PayOnArivalComponent===== ",
-              checkoutInfo
-            );
+            handelPayment("PayOn Arival");
           }}
         >
-          Book
-        </Button>
+          pay
+        </LoadingButton>
       </Stack>
     </Stack>
   );

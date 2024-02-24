@@ -103,7 +103,7 @@ const LoginButtonAndUserProfile = () => {
                 localStorage.removeItem("loginStatus");
                 localStorage.removeItem("userIdForSappingApp");
                 setAnchorEl(null);
-                router.push("/login");
+                router.push("/");
               }}
             >
               Logout

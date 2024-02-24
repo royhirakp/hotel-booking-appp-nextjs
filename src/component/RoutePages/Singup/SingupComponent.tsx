@@ -96,7 +96,7 @@ const SingupComponent = () => {
     if (state == "next") {
       if (fromState == 2) return;
       if (!sIngupOtpVerification) {
-        console.log("otpVerification==", otpVerification);
+        // console.log("otpVerification==", otpVerification);
         alert("verify the otp first");
         return;
       }
@@ -175,11 +175,7 @@ const SingupComponent = () => {
                     color="error"
                   >
                     {isSuccess ? "user created.   " : ""}
-                    {isSuccess ? (
-                      <Link href="/login"> go to Login page</Link>
-                    ) : (
-                      ""
-                    )}
+                    {isSuccess ? <Link href="/"> go to Login page</Link> : ""}
                   </Typography>
                 </Box>
                 <Stack direction="row" justifyContent="space-between" p={1}>

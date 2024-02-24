@@ -27,7 +27,7 @@ const RoomCard = ({ setState, item }: { setState: any; item: any }) => {
       <Stack direction="row">
         <div
           onClick={() => {
-            router.push(`/room/${item.id}`);
+            router.push(`/room/${item._id}`);
           }}
           style={{
             cursor: "pointer",

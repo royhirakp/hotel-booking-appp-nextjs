@@ -19,7 +19,8 @@ import { useGetUnitRoomQuery } from "@/redux/apiRequest/LoginRegister";
 const RoomDynamicPage = ({ id }: { id: any }) => {
   // console.log(id, "=====id");
   const { data: fetchSingleRoomDta } = useGetUnitRoomQuery({
-    id: "65b7fe2e1020b1f2470b8c3e",
+    id: id,
+    // "65b7fe2e1020b1f2470b8c3e",
   });
 
   let [roomData, setRoomData] = useState<any>({

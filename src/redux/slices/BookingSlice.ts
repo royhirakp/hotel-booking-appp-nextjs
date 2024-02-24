@@ -108,7 +108,7 @@ const bookingSlice = createSlice({
       state.checkIn_checkOut = action.payload.data;
     },
     setOtpVerificationONredux: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.singUpotpVerification = action.payload.status;
     },
   },

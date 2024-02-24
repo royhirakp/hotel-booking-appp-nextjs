@@ -30,13 +30,13 @@ const RoomListControls = ({
   const [checkedItems, setCheckedItems] = React.useState<{
     [key: string]: boolean;
   }>({
-    smartPhone: true,
-    miniBar: true,
-    Sauna: true,
+    smartPhone: false,
+    miniBar: false,
+    Sauna: false,
     Breakfast: true,
-    Hairdryer: true,
-    Coffeemaker: true,
-    WidesreenTv: true,
+    Hairdryer: false,
+    Coffeemaker: false,
+    WidesreenTv: false,
   });
   let minValue = 40;
   let maxVaule = 1000;
@@ -53,7 +53,7 @@ const RoomListControls = ({
     services: {},
   });
 
-  // const dateInRedux = useAppSelector((s) => s.Booking);
+  const dateInRedux = useAppSelector((s) => s);
   const dispatch = useAppDispatch();
   const handleInputChange = (event: any) => {
     // console.log(dateInRedux, "====dateInRedux");
@@ -157,7 +157,7 @@ const RoomListControls = ({
         return true;
       }
     });
-    console.log(filterC, "==filterA");
+    // console.log(filterC, "==filterA");
     // end month index
     let filterD = filterC.filter((item: any) => {
       let array: any = item.abilibiity[endMonthIndex].bookDates;
@@ -407,11 +407,11 @@ const RoomListControls = ({
             <Button
               variant="contained"
               onClick={() => {
+                // console.log(dateInRedux);
                 if (bookingData.checkIn_checkOut.length === 0) {
                   alert("please select booking dates");
                   return;
                 }
-                // console.log(formData);
                 filteropration();
                 // console.log(checkedItems);
                 // dispatch(filterSearch({ formData, checkedItems }));

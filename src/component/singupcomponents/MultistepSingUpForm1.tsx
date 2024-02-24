@@ -294,7 +294,7 @@ const EmailVarification = (props: EmailVarificationProps) => {
                     email: getValues("email"),
                   });
                   // console.log(error?.status, "==============");
-                  console.log(error as RequestError, "errorr");
+                  // console.log(error as RequestError, "errorr");
                   // console.log(RequestError);
                   // if('data' in errorForGenerateOtp){
 

@@ -322,13 +322,13 @@ const ForgetPasswordModal = ({
   function handelGetTheOtpInTheOTPButton() {
     if (forgetPasswordOption === null) {
       setForgetPasswordOption(false);
-      console.log("callinggggggggg2222");
+      // console.log("callinggggggggg2222");
     }
   }
   function handelGetTheOtpInTheMailButton() {
     if (forgetPasswordOption === null) {
       setForgetPasswordOption(true);
-      console.log("callinggggggggg1111");
+      // console.log("callinggggggggg1111");
     }
   }
 
