@@ -6,10 +6,7 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import {
-  addAditionalService,
-  setPaymentInfo,
-} from "@/redux/slices/BookingSlice";
+import { setPaymentInfo } from "@/redux/slices/BookingSlice";
 
 import { LoadingButton } from "@mui/lab";
 
@@ -33,7 +30,6 @@ const UserandRoomDetails = () => {
   const data = useAppSelector((s) => s.Booking.userInfo);
   const aditionalService = useAppSelector((s) => s.Booking.additionalservices);
   const total = useAppSelector((s) => s.Booking.totalPrice);
-  // console.log("datataaa form checkinfototaltotaltotal ", total);
   return (
     <Box>
       <Typography variant="subtitle1" fontWeight={700} pb={1}>
@@ -46,7 +42,6 @@ const UserandRoomDetails = () => {
           {aditionalService?.airportPickUp ? "AirPort Pickup   " : ""}
         </span>
         <span>{aditionalService?.tour ? "SigtheeingTour" : ""}</span>
-        {/* <span>{`${addAditionalService.message ? "true" : "false"}`}</span> */}
       </Typography>
       <Stack direction="row" flexWrap="wrap" sx={{ paddingLeft: "10%" }}>
         {[
@@ -62,7 +57,6 @@ const UserandRoomDetails = () => {
           { lable: "CheckIn", data: "09/555" },
           { lable: "Check Out", data: "16/521/2" },
           { lable: "Guest", data: "3 Adults" },
-          // { lable: "Aditional Services ", data: "Airport Pickup" },
           { lable: "Total", data: `$${total}` },
         ].map((item, i) => {
           return (
@@ -114,24 +108,23 @@ const PaymentDetails = ({ handelNext }: { handelNext: any }) => {
       ],
       userId: localStorage.getItem("userIdForSappingApp"),
     });
-    console.log(
-      {
-        roomId: checkoutInfo.room._id,
-        monthAndDate: [
-          {
-            monthName: checkoutInfo.checkIn_checkOut[0].CheckInMonthName,
-            dates: [
-              checkoutInfo.checkIn_checkOut[0].dates,
-              checkoutInfo.checkIn_checkOut[1].dates,
-            ],
-          },
-        ],
-        userId: localStorage.getItem("userIdForSappingApp"),
-      },
-
-      res
-    );
-    // handelNext();
+    // console.log(
+    //   {
+    //     roomId: checkoutInfo.room._id,
+    //     monthAndDate: [
+    //       {
+    //         monthName: checkoutInfo.checkIn_checkOut[0].CheckInMonthName,
+    //         dates: [
+    //           checkoutInfo.checkIn_checkOut[0].dates,
+    //           checkoutInfo.checkIn_checkOut[1].dates,
+    //         ],
+    //       },
+    //     ],
+    //     userId: localStorage.getItem("userIdForSappingApp"),
+    //   },
+    //   res
+    // );
+    handelNext();
   }
   let PaymentComponet;
   switch (paymentState) {
