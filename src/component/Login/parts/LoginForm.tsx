@@ -328,7 +328,7 @@ const LoginForm = () => {
                 }}
                 onClick={forgetPasswordhandleOpen}
               >
-                forget password?
+                reset / forget password?
               </Button>
               <ForgetPasswordModal
                 handleClose={forgetPasswordhandleClose}
@@ -423,7 +423,7 @@ const ForgetPasswordModal = ({
               fullWidth
               onClick={handelGetTheOtpInTheMailButton}
             >
-              Get Otp in the mail
+              Reset by OTP
             </Button>
             <Button
               variant="contained"
@@ -431,7 +431,7 @@ const ForgetPasswordModal = ({
               fullWidth
               onClick={handelGetTheOtpInTheOTPButton}
             >
-              Get link in the mail
+              Forget password
             </Button>
           </Stack>
           {forgetPasswordOption === null ? (
