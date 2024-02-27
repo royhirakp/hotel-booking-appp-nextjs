@@ -1,11 +1,11 @@
 "use client";
 import { Box, Button, CircularProgress, Skeleton, Stack } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PaginationRounded from "@/component/muiCoustomComponent/Pagination";
 import FilterDataDisplayForMobileMODAL from "../FilterDataDisplayForMobileMODAL";
 import RoomListControls from "../RoomListControls";
 import RoomList from "../RoomList";
-import data from "@/data/Data";
+
 import LinearProgress from "@mui/material/LinearProgress";
 // import { useGetAllRoomsQuery } from "@/redux/apiRequest/LoginRegister";
 const BookingPageSearch = ({
@@ -21,6 +21,7 @@ const BookingPageSearch = ({
   let [paginationSetData, setpaginationSetData] = useState<any[]>([]);
   let [pageNo, setpageNo] = useState(1);
   const ItemPerPage = 7;
+
   // let { data: reduxData } = useGetAllRoomsQuery({});
   // console.log(data, reduxData?.roomsData);
   useEffect(() => {
@@ -89,6 +90,7 @@ const BookingPageSearch = ({
           <RoomList setState={setState} paginationSetData={paginationSetData} />
         </Box>
       </Stack>
+
       <Box
         sx={{
           display: "flex",

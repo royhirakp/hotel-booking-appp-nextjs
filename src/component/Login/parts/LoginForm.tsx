@@ -23,7 +23,11 @@ import { LoadingButton } from "@mui/lab";
 import { useLoginMutation } from "@/redux/apiRequest/LoginRegister";
 import Modal from "@mui/material/Modal";
 import Cookies from "js-cookie";
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
+// import { GoogleLogin } from "@react-oauth/google";
+// import { jwtDecode } from "jwt-decode";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 interface RequestError {
   status: number;
   data: {
@@ -78,10 +82,6 @@ const LoginForm = () => {
       if (rememberMe) {
         Cookies.set("shoppingAppUserEmail", getValues("email"));
         Cookies.set("shoppingAppUserPassword", getValues("password"));
-        // console.log(Cookies.get("shoppingAppUserEmail"));
-        // console.log(Cookies.get("shoppingAppUserPassword"));
-        // let pas = Cookies.get("shoppingAppUserPassword");
-        // console.log("pass===", typeof pas);
       }
 
       const res = await Login(data);
@@ -313,9 +313,18 @@ const LoginForm = () => {
                 Login
               </LoginButton>
               {/* rember me */}
-              <Link href="#" onClick={forgetPasswordhandleOpen}>
+              <Button
+                variant="text"
+                sx={{
+                  padding: 0,
+                  margin: 0,
+                  background: "none",
+                  textDecoration: "underline",
+                }}
+                onClick={forgetPasswordhandleOpen}
+              >
                 forget password?
-              </Link>
+              </Button>
               <ForgetPasswordModal
                 handleClose={forgetPasswordhandleClose}
                 open={ForgetPasswordModalopen}
@@ -326,7 +335,9 @@ const LoginForm = () => {
               <Typography>or, login with</Typography>
             </Box>
             <Box>
-              <IconButtons />
+              <GoogleOAuthProvider clientId="620011478178-f2gmvmf68qejdqekoka1u7n8e3sgfbad.apps.googleusercontent.com">
+                <IconButtons />
+              </GoogleOAuthProvider>
             </Box>
           </Stack>
         </form>
@@ -336,6 +347,7 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
 const ForgetPasswordModal = ({
   handleClose,
   open,
@@ -484,33 +496,62 @@ const ForgetPasswordModal = ({
     </Modal>
   );
 };
+
 function IconButtons() {
-  return (
-    <Stack direction="row" spacing={1} pb={3}>
-      {[
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const res = await axios.get(
+        "https://www.googleapis.com/oauth2/v3/userinfo",
         {
-          icon: <GoogleIcon sx={{ color: "#ffff" }} />,
-          backgroundColor: "#a03030",
-        },
-      ].map((item, i) => {
-        return (
-          <IconButton
-            color="primary"
-            key={i * 0.215}
-            aria-label="goolgle"
-            sx={{
-              color: "#ffff",
-              padding: "8px",
-              background: item.backgroundColor,
-              "&:hover": {
+          headers: {
+            Authorization: `Bearer ${tokenResponse?.access_token}`,
+          },
+        }
+      );
+
+      console.log(res);
+    },
+  });
+  return (
+    <>
+      {/* <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+            const decoded = jwtDecode(credentialResponse?.credential);
+            console.log(decoded);
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        /> */}
+
+      <Stack direction="row" spacing={1} pb={3}>
+        {[
+          {
+            icon: <GoogleIcon sx={{ color: "#ffff" }} />,
+            backgroundColor: "#a03030",
+          },
+        ].map((item, i) => {
+          return (
+            <IconButton
+              color="primary"
+              key={i * 0.215}
+              aria-label="goolgle"
+              onClick={() => login()}
+              sx={{
+                color: "#ffff",
+                padding: "8px",
                 background: item.backgroundColor,
-              },
-            }}
-          >
-            {item.icon}
-          </IconButton>
-        );
-      })}
-    </Stack>
+                "&:hover": {
+                  background: item.backgroundColor,
+                },
+              }}
+            >
+              {item.icon}
+            </IconButton>
+          );
+        })}
+      </Stack>
+    </>
   );
 }

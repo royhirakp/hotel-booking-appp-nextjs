@@ -5,9 +5,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DownloadIcon from "@mui/icons-material/Download";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { refreshPageOrMakeStageZero } from "@/redux/slices/BookingSlice";
-
 import { useRouter } from "next/navigation";
-import { useReactToPrint } from "react-to-print";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const ConfermationPage = () => {
   const dispatch = useAppDispatch();
@@ -16,14 +16,33 @@ const ConfermationPage = () => {
   const total = useAppSelector((s) => s.Booking.totalPrice);
   const aditionalService = useAppSelector((s) => s.Booking.additionalservices);
   const paymentMode = useAppSelector((s) => s.Booking.paymentMethod);
-  const dondoledPdf = useRef<any>();
-  const genataPdg = useReactToPrint({
-    content: () => dondoledPdf.current,
-    documentTitle: "userDtata",
-    onAfterPrint: () => console.log("pdf downloded"),
-  });
+  const pdfRef = useRef<any>();
+  function downlodePdf() {
+    const input = pdfRef.current;
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4", true);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgx = (pdfWidth - imgWidth * ratio) / 2;
+      const imgy = 30;
+      pdf.addImage(
+        imgData,
+        "PNG",
+        imgx,
+        imgy,
+        imgWidth * ratio,
+        imgHeight * ratio
+      );
+      pdf.save("invoice.pdf");
+    });
+  }
+
   return (
-    <Box ref={dondoledPdf}>
+    <Box ref={pdfRef}>
       <Paper>
         <Typography
           variant="h6"
@@ -31,7 +50,6 @@ const ConfermationPage = () => {
             textAlign: "center",
             justifyContent: "center",
             display: "flex",
-            // height: "100px",
             padding: "20px",
           }}
         >
@@ -59,7 +77,7 @@ const ConfermationPage = () => {
             marginLeft: "5%",
           }}
         >
-          <Button onClick={genataPdg}>
+          <Button onClick={downlodePdf}>
             Download receipt
             <Box
               component="span"

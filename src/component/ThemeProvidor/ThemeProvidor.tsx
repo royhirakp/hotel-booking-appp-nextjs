@@ -1,9 +1,18 @@
 "use client";
 
-import { Box, CssBaseline, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  CssBaseline,
+  Modal,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { ReactNode, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
+import ComponentForPageInformation from "./ComponentForPageInformation";
 interface ContainerProps {
   children: ReactNode;
 }
@@ -154,8 +163,15 @@ const ThemeProvidor: React.FC<ContainerProps> = ({ children }) => {
   });
   return (
     <Box>
-      <ThemeProvider theme={theme}>
+      <Stack direction="row" spacing={2} ml={2} mt={1} mb={2}>
+        <ComponentForPageInformation />
+        <Typography sx={{ height: 40, lineHeight: 2.5 }} textAlign="center">
+          Dark Mode
+        </Typography>
+
         <Switch checked={darkMode} onChange={toggleDarkMode} color="primary" />
+      </Stack>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}
       </ThemeProvider>

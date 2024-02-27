@@ -108,22 +108,7 @@ const PaymentDetails = ({ handelNext }: { handelNext: any }) => {
       ],
       userId: localStorage.getItem("userIdForSappingApp"),
     });
-    // console.log(
-    //   {
-    //     roomId: checkoutInfo.room._id,
-    //     monthAndDate: [
-    //       {
-    //         monthName: checkoutInfo.checkIn_checkOut[0].CheckInMonthName,
-    //         dates: [
-    //           checkoutInfo.checkIn_checkOut[0].dates,
-    //           checkoutInfo.checkIn_checkOut[1].dates,
-    //         ],
-    //       },
-    //     ],
-    //     userId: localStorage.getItem("userIdForSappingApp"),
-    //   },
-    //   res
-    // );
+
     handelNext();
   }
   let PaymentComponet;

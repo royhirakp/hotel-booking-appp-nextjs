@@ -14,7 +14,6 @@ export const userLoginRegister = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl:
-      // "https://api.dribbble.com/v2",
       // "http://localhost:3000/api/v1",
       "https://hotailbooking-nestjs-api.onrender.com/api/v1",
     prepareHeaders(headers) {
