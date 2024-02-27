@@ -93,6 +93,11 @@ const LoginForm = () => {
           "userIdForSappingApp",
           (res as susessResponse).data.userId
         );
+        localStorage.setItem(
+          "userImageUrlNextShoppingApp",
+          "https://mui.com/static/images/avatar/2.jpg"
+        );
+
         router.push("/webapp/Home");
       }
     } catch (error) {
@@ -498,6 +503,7 @@ const ForgetPasswordModal = ({
 };
 
 function IconButtons() {
+  const router = useRouter();
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       const res = await axios.get(
@@ -508,10 +514,16 @@ function IconButtons() {
           },
         }
       );
-
-      console.log(res);
+      // const { sub, name, email, picture } = res?.data;
+      // console.log({ sub, name, email, picture });
+      localStorage.setItem("userImageUrlNextShoppingApp", res?.data?.picture);
+      router.push("/webapp/Home");
+      //make a api calll for sing up or login  the user then saved the user data in the redux store
+      // or coockie storage {email, name , user id, user image url}
+      // request body for the user
     },
   });
+
   return (
     <>
       {/* <GoogleLogin

@@ -147,7 +147,7 @@ const NewHeader = () => {
                     sx={i == activeButton ? activeStyle : inActiveStyle}
                     // onClick={() => {
                     //   setSActiveButton(i);
-                    //   // router.push(`/webapp/${item}`);
+                    // router.push(`/webapp/${item}`);
                     // }}
                   >
                     {item}
@@ -178,9 +178,6 @@ const NewHeader = () => {
             >
               <Button
                 variant="outlined"
-                // onClick={() => {
-                //   router.push("/bookingPage");
-                // }}
                 sx={{
                   fontSize: {
                     xs: "15px",
@@ -216,6 +213,3 @@ const NewHeader = () => {
 };
 
 export default NewHeader;
-
-// import Link from "next/link";
-// import  from '@mui/icons-material/AccountBox';

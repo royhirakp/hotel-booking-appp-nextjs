@@ -7,24 +7,21 @@ import Link from "next/link";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Image from "next/image";
 
 const LoginButtonAndUserProfile = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [token, setToken] = React.useState<null | string>(null);
+  const [userImageUrl, setUserImageUrl] = React.useState<null | string>(null);
   const open = Boolean(anchorEl);
   const isLocalStorageAvailable =
     typeof window !== "undefined" && window.localStorage;
+
   useEffect(() => {
     if (isLocalStorageAvailable) {
-      setToken(localStorage.getItem("loginStatus"));
+      setUserImageUrl(localStorage.getItem("userImageUrlNextShoppingApp"));
     }
   }, [isLocalStorageAvailable]);
 
-  // console.log(
-  //   localStorage.getItem("loginStatus"),
-  //   // localStorage.getItem("helo"),
-  //   '====localStorage.getItem("loginStatus") '
-  // );
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -32,14 +29,13 @@ const LoginButtonAndUserProfile = () => {
     setAnchorEl(null);
   };
   const router = useRouter();
+
   return (
     <>
       <Box>
         <Box
           sx={{
-            display:
-              //  "block",
-              `${token ? "none" : "block"}`,
+            display: `${userImageUrl ? "none" : "block"}`,
           }}
         >
           <Link href="/login">
@@ -48,7 +44,6 @@ const LoginButtonAndUserProfile = () => {
               sx={{
                 borderRadius: "20px",
                 "&:hover": {
-                  // background: "#0d6efd",
                   color: "#ffff",
                 },
               }}
@@ -64,13 +59,17 @@ const LoginButtonAndUserProfile = () => {
           sx={{
             display:
               // "flex",
-              `${token ? "flex" : "none"}`,
+              `${userImageUrl ? "flex" : "none"}`,
           }}
         >
           <IconButton onClick={handleClick} sx={{ padding: 0 }}>
             <Avatar
               alt="Remy Sharp"
-              src="https://mui.com/static/images/avatar/2.jpg"
+              src={`${
+                userImageUrl
+                  ? userImageUrl
+                  : "https://mui.com/static/images/avatar/2.jpg"
+              }`}
             />
           </IconButton>
           <Menu
@@ -102,6 +101,7 @@ const LoginButtonAndUserProfile = () => {
               onClick={() => {
                 localStorage.removeItem("loginStatus");
                 localStorage.removeItem("userIdForSappingApp");
+                localStorage.removeItem("userImageUrlNextShoppingApp");
                 setAnchorEl(null);
                 router.push("/");
               }}

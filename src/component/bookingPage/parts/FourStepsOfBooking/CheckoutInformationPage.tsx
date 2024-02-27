@@ -81,7 +81,7 @@ const PaymentDetails = ({ handelNext }: { handelNext: any }) => {
   const checkoutInfo = useAppSelector((S) => S.Booking);
   const [BookRoom, { isError, isSuccess, isLoading }] = useBookRoomMutation({});
   async function handelPayment(paymentMethod: string) {
-    if (!localStorage.getItem("userIdForSappingApp")) {
+    if (!localStorage.getItem("userImageUrlNextShoppingApp")) {
       alert("login First");
       return;
     }

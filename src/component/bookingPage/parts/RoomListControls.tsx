@@ -53,10 +53,8 @@ const RoomListControls = ({
     services: {},
   });
 
-  const dateInRedux = useAppSelector((s) => s);
   const dispatch = useAppDispatch();
   const handleInputChange = (event: any) => {
-    // console.log(dateInRedux, "====dateInRedux");
     let firstDate = event[0];
     let secondDate = event[1];
     dispatch(
@@ -74,9 +72,6 @@ const RoomListControls = ({
       })
     );
 
-    // console.log(firstDate?.$D + "", firstDate?.$M + 1 + "");
-    // console.log(secondDate?.$D + "", secondDate?.$M + 1 + "");
-
     setFormData((prevFormData) => ({
       ...prevFormData,
       dates: [
@@ -87,9 +82,6 @@ const RoomListControls = ({
   };
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    // setValue(newValue as number[]);
-    // console.log(value);
-
     setFormData((prevFormData) => ({
       ...prevFormData,
       priceRange: newValue as number[],
@@ -103,8 +95,7 @@ const RoomListControls = ({
 
   const handleCheckboxChange = (event: any, label: string) => {
     const { name, checked } = event.target;
-    // console.log(checkedItems);
-    // console.log("name, checked====", name, checked, event.target);
+
     setCheckedItems({
       ...checkedItems,
       [label]: checked,
@@ -119,8 +110,6 @@ const RoomListControls = ({
         services[i] = value;
       }
     }
-    // console.log(services);
-    // dispatch(addFilterQuery({ type: "services", value: services }));
   };
   function filteropration() {
     let startDate = formData?.dates[0]?.split("-");
@@ -137,7 +126,6 @@ const RoomListControls = ({
         }
       }
     });
-    // console.log(filterA);
 
     let filterB = filterA.filter((item: any) => {
       for (let i in item.abilibiity) {
@@ -157,7 +145,6 @@ const RoomListControls = ({
         return true;
       }
     });
-    // console.log(filterC, "==filterA");
     // end month index
     let filterD = filterC.filter((item: any) => {
       let array: any = item.abilibiity[endMonthIndex].bookDates;
@@ -167,7 +154,6 @@ const RoomListControls = ({
     });
 
     let filterE = filterD.filter((item: any) => {
-      // console.log(item.abalableServices, checkedItems);
       let temp = false;
       for (let i in checkedItems) {
         const key = i as
