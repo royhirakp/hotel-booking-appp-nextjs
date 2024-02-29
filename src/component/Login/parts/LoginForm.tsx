@@ -340,7 +340,9 @@ const LoginForm = () => {
               <Typography>or, login with</Typography>
             </Box>
             <Box>
-              <GoogleOAuthProvider clientId="620011478178-f2gmvmf68qejdqekoka1u7n8e3sgfbad.apps.googleusercontent.com">
+              <GoogleOAuthProvider
+                clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}
+              >
                 <IconButtons />
               </GoogleOAuthProvider>
             </Box>
