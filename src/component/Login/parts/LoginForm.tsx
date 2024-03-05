@@ -1,33 +1,30 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box, Stack, Typography, Button, Paper } from "@mui/material";
+import { Box, Stack, Typography, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { FormControl, InputLabel, FormHelperText, Input } from "@mui/material";
+import { FormControl } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { styled } from "@mui/material/styles";
 import { LoadingButton } from "@mui/lab";
-import { useLoginMutation } from "@/redux/apiRequest/LoginRegister";
+import {
+  useGoogleLoginMutation,
+  useLoginMutation,
+} from "@/redux/apiRequest/LoginRegister";
 import Modal from "@mui/material/Modal";
 import Cookies from "js-cookie";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-// import { GoogleLogin } from "@react-oauth/google";
-// import { jwtDecode } from "jwt-decode";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import ForgetPasswordModal from "./ForgetPasswordModal";
 interface RequestError {
   status: number;
   data: {
@@ -123,7 +120,6 @@ const LoginForm = () => {
     React.useState(false);
   const forgetPasswordhandleOpen = () => setForgetPasswordModal(true);
   const forgetPasswordhandleClose = () => setForgetPasswordModal(false);
-  const [password, setPassword] = useState("123456@Aa");
 
   useEffect(() => {
     let pas = Cookies.get("shoppingAppUserPassword");
@@ -355,174 +351,48 @@ const LoginForm = () => {
 
 export default LoginForm;
 
-const ForgetPasswordModal = ({
-  handleClose,
-  open,
-}: {
-  handleClose: any;
-  open: any;
-}) => {
-  const [forgetPasswordOption, setForgetPasswordOption] =
-    useState<Boolean | null>(null);
-
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  function handelGetTheOtpInTheOTPButton() {
-    if (forgetPasswordOption === null) {
-      setForgetPasswordOption(false);
-      // console.log("callinggggggggg2222");
-    }
-  }
-  function handelGetTheOtpInTheMailButton() {
-    if (forgetPasswordOption === null) {
-      setForgetPasswordOption(true);
-      // console.log("callinggggggggg1111");
-    }
-  }
-
-  return (
-    <Modal open={open} onClose={handleClose}>
-      <Box
-        sx={{
-          position: "absolute" as "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          bgcolor: "background.paper",
-          boxShadow: 24,
-          p: 4,
-          borderRadius: "10px",
-        }}
-      >
-        <Typography variant="subtitle1" textAlign="center" mb={2}>
-          FORGET PASSWORD FORM
-        </Typography>
-        <form action="">
-          <TextField fullWidth placeholder="your email" type="email" />
-          <small
-            style={{
-              marginTop: "10px",
-              display: "inline-block",
-            }}
-          >
-            *nd: you can do this in two methods:
-            <br />
-            1. one is by get the OTP in the mail
-            <br />
-            2. and another is get the link in the email
-          </small>
-          <Stack direction="row" spacing={2} mt={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={handelGetTheOtpInTheMailButton}
-            >
-              Reset by OTP
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={handelGetTheOtpInTheOTPButton}
-            >
-              Forget password
-            </Button>
-          </Stack>
-          {forgetPasswordOption === null ? (
-            <></>
-          ) : (
-            <Box>
-              {forgetPasswordOption ? (
-                <>
-                  <Typography
-                    variant="body1"
-                    textAlign="center"
-                    color="error"
-                    mt={2}
-                  >
-                    OTP for reset the password has send to your mail. Please
-                    check your mail
-                  </Typography>
-                  <Stack direction="row" spacing={2} mt={1}>
-                    <TextField
-                      placeholder="new password"
-                      sx={{
-                        width: "80%",
-                      }}
-                      type={showPassword ? "text" : "password"}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                              edge="end"
-                            >
-                              {!showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextField type="text" placeholder="OTP" />
-                  </Stack>
-                  <Stack mt={3}>
-                    <Button variant="contained">Reset Password</Button>
-                  </Stack>
-                </>
-              ) : (
-                <>
-                  <Typography
-                    variant="body1"
-                    textAlign="center"
-                    p={3}
-                    color="error"
-                  >
-                    link for reset the password has send to your mail. Please
-                    check your mail
-                  </Typography>
-                </>
-              )}
-            </Box>
-          )}
-        </form>
-      </Box>
-    </Modal>
-  );
-};
-
 function IconButtons() {
   const router = useRouter();
+  const [Login, { isLoading, isError, error }] = useGoogleLoginMutation();
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      const res = await axios.get(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-          headers: {
-            Authorization: `Bearer ${tokenResponse?.access_token}`,
-          },
+      try {
+        const res_google_api = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse?.access_token}`,
+            },
+          }
+        );
+        const res = await Login(res_google_api?.data);
+
+        localStorage.setItem(
+          "userImageUrlNextShoppingApp",
+          res_google_api?.data?.picture
+        );
+
+        if ((res as susessResponse)?.data) {
+          // console.log((res as susessResponse).data.token);
+          localStorage.setItem(
+            "loginStatus",
+            (res as susessResponse).data.token
+          );
+          localStorage.setItem(
+            "userIdForSappingApp",
+            (res as susessResponse).data.userId
+          );
         }
-      );
-      // const { sub, name, email, picture } = res?.data;
-      // console.log({ sub, name, email, picture });
-      localStorage.setItem("userImageUrlNextShoppingApp", res?.data?.picture);
-      router.push("/webapp/Home");
-      //make a api calll for sing up or login  the user then saved the user data in the redux store
-      // or coockie storage {email, name , user id, user image url}
-      // request body for the user
+
+        router.push("/webapp/Home");
+        // const { sub, name, email, picture } = res?.data;
+        // console.log({ sub, name, email, picture });
+        //make a api calll for sing up or login  the user then saved the user data in the redux store
+        // or coockie storage {email, name , user id, user image url}
+        // request body for the user
+      } catch (error) {
+        console.log("error: ", error);
+      }
     },
   });
 

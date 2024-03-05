@@ -29,6 +29,7 @@ export const userLoginRegister = createApi({
 
   endpoints(builder) {
     return {
+      //login**********************************************************************************************
       login: builder.mutation({
         query(body) {
           return {
@@ -38,6 +39,16 @@ export const userLoginRegister = createApi({
           };
         },
       }),
+      googleLogin: builder.mutation({
+        query(body) {
+          return {
+            url: "/auth/google_login",
+            method: "POST",
+            body: body,
+          };
+        },
+      }),
+      //singuo******************************************************************************************************
       generateOtp: builder.mutation({
         query(body) {
           return {
@@ -65,6 +76,50 @@ export const userLoginRegister = createApi({
           };
         },
       }),
+
+      //FORGET PASSWORD**********************************************************
+
+      forgetPasswordEmailGeneration: builder.mutation({
+        query(body) {
+          return {
+            url: "/auth/forget_password_send_mail_with_token",
+            method: "POST",
+            body: body,
+          };
+        },
+      }),
+
+      forgetPassword: builder.mutation({
+        query({ token, data }) {
+          return {
+            url: `/auth/forget_password/${token}`,
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
+
+      //RESET PASSWORD******************************************************************
+      otp_Generation_forResetPassword: builder.mutation({
+        query(body) {
+          return {
+            url: "/auth/reset_password_otpGeneration",
+            method: "POST",
+            body: body,
+          };
+        },
+      }),
+      ResetPassword: builder.mutation({
+        query(body) {
+          return {
+            url: "/auth/reset_password_verification",
+            method: "POST",
+            body: body,
+          };
+        },
+      }),
+
+      //rooms apiii
       getRoomsForHome: builder.query({
         query() {
           return {
@@ -124,6 +179,7 @@ export const userLoginRegister = createApi({
 
 export const {
   useLoginMutation,
+  useGoogleLoginMutation,
   useGenerateOtpMutation,
   useVerifyOtpMutation,
   useSignUpMutation,
@@ -133,4 +189,8 @@ export const {
   useAddBooksMutation,
   useGetAllRoomsQuery,
   useBookRoomMutation,
+  useForgetPasswordEmailGenerationMutation,
+  useForgetPasswordMutation,
+  useOtp_Generation_forResetPasswordMutation,
+  useResetPasswordMutation,
 } = userLoginRegister;
